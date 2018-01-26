@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.DDistributorEntity" table="d_distributor" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="userId">
+            <column name="user_id" sql-type="int(11)"/>
+        </property>
+        <property name="name">
+            <column name="name" sql-type="varchar(256)" length="256" not-null="true"/>
+        </property>
+        <property name="contractor">
+            <column name="contractor" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="phone">
+            <column name="phone" sql-type="varchar(11)" length="11"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="sexual">
+            <column name="sexual" sql-type="varchar(1)" length="1" not-null="true"/>
+        </property>
+        <property name="qq">
+            <column name="qq" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="wwId">
+            <column name="ww_id" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="province">
+            <column name="province" sql-type="varchar(11)" length="11" not-null="true"/>
+        </property>
+        <property name="provinceDesc">
+            <column name="provinceDesc" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="city">
+            <column name="city" sql-type="varchar(11)" length="11" not-null="true"/>
+        </property>
+        <property name="cityDesc">
+            <column name="cityDesc" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="area">
+            <column name="area" sql-type="varchar(11)" length="11" not-null="true"/>
+        </property>
+        <property name="areaDesc">
+            <column name="areaDesc" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="contractAddress">
+            <column name="contract_address" sql-type="varchar(1000)" length="1000" not-null="true"/>
+        </property>
+        <property name="comment">
+            <column name="comment" sql-type="varchar(2000)" length="2000" not-null="true"/>
+        </property>
+        <property name="headUrl">
+            <column name="head_url" sql-type="varchar(256)" length="256" not-null="true"/>
+        </property>
+        <property name="vipId">
+            <column name="vip_id" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="points">
+            <column name="points" sql-type="int(11)"/>
+        </property>
+        <property name="totalAmount">
+            <column name="total_amount" sql-type="decimal(12,2)" precision="12" scale="2"/>
+        </property>
+        <property name="createBy">
+            <column name="create_by" sql-type="int(11)"/>
+        </property>
+        <property name="createTime">
+            <column name="create_time" sql-type="timestamp(6)"/>
+        </property>
+        <property name="lastUpdateBy">
+            <column name="last_update_by" sql-type="int(11)"/>
+        </property>
+        <property name="lastUpdateTime">
+            <column name="last_update_time" sql-type="timestamp(6)"/>
+        </property>
+        <property name="saleChannel">
+            <column name="sale_channel" sql-type="char(1)" length="1" not-null="true"/>
+        </property>
+        <property name="cooperateMode">
+            <column name="cooperate_mode" sql-type="char(1)" length="1" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

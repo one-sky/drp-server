@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.DPointsEntity" table="d_points" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="pointsDesc">
+            <column name="points_desc" sql-type="varchar(128)" length="128"/>
+        </property>
+        <property name="pointsAmount">
+            <column name="points_amount" sql-type="int(11)"/>
+        </property>
+        <property name="actionAmount">
+            <column name="action_amount" sql-type="int(11)"/>
+        </property>
+    </class>
+</hibernate-mapping>

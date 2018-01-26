@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.DCollectionEntity" table="d_collection" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="distributorId">
+            <column name="distributor_id" sql-type="int(11)"/>
+        </property>
+        <property name="productId">
+            <column name="product_id" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="price">
+            <column name="price" sql-type="decimal(12,2)" precision="12" scale="2" not-null="true"/>
+        </property>
+        <property name="sortBy">
+            <column name="sort_by" sql-type="int(6)" not-null="true"/>
+        </property>
+        <property name="createBy">
+            <column name="create_by" sql-type="int(11)"/>
+        </property>
+        <property name="createTime">
+            <column name="create_time" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateBy">
+            <column name="last_update_by" sql-type="int(11)"/>
+        </property>
+        <property name="lastUpdateTime">
+            <column name="last_update_time" sql-type="timestamp"/>
+        </property>
+    </class>
+</hibernate-mapping>

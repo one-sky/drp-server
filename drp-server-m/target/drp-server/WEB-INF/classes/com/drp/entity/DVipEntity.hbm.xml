@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.DVipEntity" table="d_vip" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="vipLevel">
+            <column name="vip_level" sql-type="varchar(128)" length="128"/>
+        </property>
+        <property name="points">
+            <column name="points" sql-type="int(11)"/>
+        </property>
+        <property name="levelCode">
+            <column name="level_code" sql-type="int(11)"/>
+        </property>
+    </class>
+</hibernate-mapping>
