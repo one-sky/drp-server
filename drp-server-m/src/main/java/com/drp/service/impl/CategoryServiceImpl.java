@@ -6,11 +6,11 @@ import com.drp.Util.PageModel;
 import com.drp.entity.PCategoryEntity;
 import com.drp.repository.CategoryRepository;
 import com.drp.service.CategoryService;
-import com.inheater.erp.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public Integer saveCategory(PCategoryEntity entity, Integer userId) {
-        Timestamp currentTime = DateUtil.getCurrentDate();
+        Timestamp currentTime = new Timestamp(new Date().getTime());
         Integer id= entity.getId();
         //新建时
         if(null == id || id ==0){

@@ -8,7 +8,6 @@ import com.drp.repository.DistributorRepository;
 import com.drp.repository.ProductRepository;
 import com.drp.service.ProductService;
 import com.drp.vo.*;
-import com.inheater.erp.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -132,7 +131,7 @@ public class ProductServiceImpl implements ProductService {
     public Integer addCollectionProduct(Integer distributorId, List<Integer> spuIds) {
         // 判断是否存在该分销商
         if(null!=distributorRepository.getDistributorDetail(distributorId)) {
-            Timestamp tmp = DateUtil.getCurrentDate();
+            Timestamp tmp = new Timestamp(new Date().getTime());
             DCollectionEntity entity = new DCollectionEntity();
             List<CollectProductVO> result =productRepository.getCollectionProductList(distributorId, 10000, 0);
             entity.setSortBy(result.get(result.size()-1).getSortBy()+1);
@@ -183,7 +182,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public Integer updateShoppingCartList(List<ShoppingCartItemVO> shoppingCartItemVOList, Integer distributorId) {
-        Timestamp currentTime = DateUtil.getCurrentDate();
+        Timestamp currentTime = new Timestamp(new Date().getTime());
         PCartEntity cart;
         List<ShoppingCartItemVO> dbCartList = this.getShoppingCartList(distributorId, null);
         for (ShoppingCartItemVO vo : shoppingCartItemVOList) {

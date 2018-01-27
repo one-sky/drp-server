@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.drp.Util.BaseModel;
 import com.drp.Util.Constants;
 import com.drp.Util.PageModel;
-import com.drp.entity.RArticleEntity;
-import com.drp.entity.RBannerEntity;
-import com.drp.entity.RChannelResourceEntity;
-import com.drp.entity.RRegionEntity;
+import com.drp.entity.*;
 import com.drp.service.ChannelService;
 import com.drp.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +118,73 @@ public class ResourceAction {
         }
         return model;
     }
+
+    /**
+     * 获取公告
+     * @return
+     */
+    @RequestMapping(value = "getNoticeList",method= RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<RNoticeEntity>> getNoticeList(@RequestBody String jsonString){
+        BaseModel<List<RNoticeEntity>> model = new BaseModel<List<RNoticeEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        // -1- 管理员，0-未登录 1-分销商，
+        Integer userType = 0;
+        Boolean isIndex = object.getBoolean("isIndex");
+        Integer pageNum = new Integer(1);
+        Integer pageSize = new Integer(3);
+        if(!isIndex) {
+            userType = object.getInteger("userType");
+            pageNum = object.getInteger("pageNum");
+            pageSize = object.getInteger("pageSize");
+        }
+        try {
+            Map<String,Object> map =  resourceService.getNoticeList(userType, isIndex, pageNum, pageSize);
+            List<RNoticeEntity> data= (List<RNoticeEntity>) map.get("dataList");
+            PageModel pageInfo= (PageModel) map.get("pageInfo");
+            model.setData(data);
+            model.setPage(pageInfo);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
+    /**
+     * 获取促销
+     * @return
+     */
+    @RequestMapping(value = "getPromotionList",method= RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<PProductPromotionEntity>> getPromotionList(@RequestBody String jsonString){
+        BaseModel<List<PProductPromotionEntity>> model = new BaseModel<List<PProductPromotionEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        Boolean isIndex = object.getBoolean("isIndex");
+        Integer userType = 0;
+        Integer pageNum = new Integer(1);
+        Integer pageSize = new Integer(3);
+        if(!isIndex) {
+            // 1-管理员 2-分销商，
+            userType = object.getInteger("userType");
+            pageNum = object.getInteger("pageNum");
+            pageSize = object.getInteger("pageSize");
+        }
+        try {
+            Map<String,Object> map =  resourceService.getPromotionList(userType, isIndex, pageNum, pageSize);
+            List<PProductPromotionEntity> data= (List<PProductPromotionEntity>) map.get("dataList");
+            PageModel pageInfo= (PageModel) map.get("pageInfo");
+            model.setData(data);
+            model.setPage(pageInfo);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
 
     /**
      * 获取可选渠道列表

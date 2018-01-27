@@ -1,5 +1,6 @@
 package com.drp.repository;
 
+import com.drp.entity.PProductPromotionEntity;
 import com.drp.entity.RArticleEntity;
 import com.drp.entity.RBannerEntity;
 import com.drp.entity.RRegionEntity;
@@ -26,6 +27,10 @@ public interface ResourceRepository {
     public Integer insertArticle(RArticleEntity entity);
 
     public Integer updateArticle(RArticleEntity entity);
+
+    public List<RArticleEntity> getNoticeList( Integer userType, Integer pageSize, Integer startIndex);
+
+    public List<PProductPromotionEntity> getPromotionList(Integer userType, Integer pageSize, Integer startIndex);
 
     public List<RRegionEntity> getProvinceList();
 

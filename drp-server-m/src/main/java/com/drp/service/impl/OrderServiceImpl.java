@@ -8,7 +8,6 @@ import com.drp.repository.ProductRepository;
 import com.drp.service.OrderService;
 import com.drp.service.ProductService;
 import com.drp.vo.*;
-import com.inheater.erp.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     public String generateOrder(Integer type, DAddressEntity addressVO, List<ShoppingCartItemVO> shoppingCartItemVOList,
                                  Integer distributorId, String buyerMessage) {
 
-        Timestamp currentTime = DateUtil.getCurrentDate();
+        Timestamp currentTime = new Timestamp(new Date().getTime());
         String error = "";
 
         OOrderEntity orderVO = new OOrderEntity();
@@ -273,7 +272,7 @@ public class OrderServiceImpl implements OrderService {
         if(!dbVOList.isEmpty()) {
             OOrderEntity dbVO = dbVOList.get(0);
             if(Integer.valueOf(10).equals(dbVO.getStatus())) {
-                Timestamp currentTime = DateUtil.getCurrentDate();
+                Timestamp currentTime = new Timestamp(new Date().getTime());
                 dbVO.setStatus(20);
                 dbVO.setPaymentStatus(2);
                 dbVO.setPaymentTime(currentTime);
@@ -295,7 +294,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public String cancelOrderList(List<OOrderEntity> orderList) {
-        Timestamp tmp = DateUtil.getCurrentDate();
+        Timestamp tmp = new Timestamp(new Date().getTime());
         String error ="";
         List<Integer> orderIds = new ArrayList<Integer>();
         for(OOrderEntity entity:orderList) {

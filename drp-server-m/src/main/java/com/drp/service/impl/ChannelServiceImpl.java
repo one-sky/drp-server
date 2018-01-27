@@ -4,11 +4,11 @@ import com.drp.entity.DChannelEntity;
 import com.drp.entity.RChannelResourceEntity;
 import com.drp.repository.ChannelRepository;
 import com.drp.service.ChannelService;
-import com.inheater.erp.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,7 +45,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     public Integer saveChannel(DChannelEntity entity) {
-        Timestamp tmp = DateUtil.getCurrentDate();
+        Timestamp tmp = new Timestamp(new Date().getTime());
         Integer id= entity.getId();
         //新建时
         if(null == id || id ==0){

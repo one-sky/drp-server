@@ -6,11 +6,11 @@ import com.drp.Util.PageModel;
 import com.drp.entity.*;
 import com.drp.repository.DistributorRepository;
 import com.drp.service.DistributorService;
-import com.inheater.erp.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class DistributorServiceImpl implements DistributorService {
 
 
     public Integer saveAddress(DAddressEntity entity) {
-        Timestamp tmp = DateUtil.getCurrentDate();
+        Timestamp tmp = new Timestamp(new Date().getTime());
         Integer distributorId = entity.getDistributorId();
         Integer id = entity.getId();
         //新建时
@@ -79,7 +79,7 @@ public class DistributorServiceImpl implements DistributorService {
 
     //删除地址的时候需要判断，如果删除的是默认地址的话，那么就让排在最前的那条为默认地址
     public Integer deleteAddress(Integer id, Integer distributorId) {
-        Timestamp tmp = DateUtil.getCurrentDate();
+        Timestamp tmp = new Timestamp(new Date().getTime());
         DAddressEntity address = distributorRepository.selectAddressByKey(id);
         //判断是否为 默认地址
         if ("Y".equals(address.getIsDefault())) {
@@ -106,7 +106,7 @@ public class DistributorServiceImpl implements DistributorService {
     }
 
     public Integer setAddressDefault(Integer id, Integer distributorId) {
-        Timestamp tmp = DateUtil.getCurrentDate();
+        Timestamp tmp = new Timestamp(new Date().getTime());
         //先取得所有的地址
         List<DAddressEntity> list = distributorRepository.getAddressList(distributorId);
         DAddressEntity entity = (DAddressEntity) list.get(0);

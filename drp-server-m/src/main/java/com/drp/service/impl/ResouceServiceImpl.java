@@ -1,18 +1,19 @@
 package com.drp.service.impl;
 
 import com.drp.Util.*;
+import com.drp.entity.PProductPromotionEntity;
 import com.drp.entity.RArticleEntity;
 import com.drp.entity.RBannerEntity;
 import com.drp.Util.Insert;
 import com.drp.entity.RRegionEntity;
 import com.drp.repository.ResourceRepository;
 import com.drp.service.ResourceService;
-import com.inheater.erp.common.utils.DateUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class ResouceServiceImpl implements ResourceService {
     }
 
     public Integer saveBanner(RBannerEntity entity, Integer userId) {
-        Timestamp currentTime = DateUtil.getCurrentDate();
+        Timestamp currentTime = new Timestamp(new Date().getTime());
         Integer id= entity.getId();
         //新建时
         if(null == id || id ==0){
@@ -81,7 +82,7 @@ public class ResouceServiceImpl implements ResourceService {
     }
 
     public Integer saveArticle(RArticleEntity entity, Integer userId) {
-        Timestamp currentTime = DateUtil.getCurrentDate();
+        Timestamp currentTime = new Timestamp(new Date().getTime());
         Integer id= entity.getId();
         //新建时
         if(null == id || id ==0){
@@ -101,6 +102,54 @@ public class ResouceServiceImpl implements ResourceService {
 
 
         }
+    }
+
+    public Map<String, Object> getNoticeList(Integer userType, Boolean isIndex, Integer pageNum, Integer pageSize) {
+        Map<String,Object> map=new HashMap<String,Object>();
+        Integer initPageNum;
+        Integer initPageSize;
+        Integer initStartIndex;
+        if(isIndex) {
+            initPageSize = 3;
+            initStartIndex = 0;
+            initPageNum = 1;
+
+        } else {
+            InitPage initPage = new InitPage(pageNum, pageSize);
+            initPageNum = initPage.getPageNum();
+            initPageSize = initPage.getPageSize();
+            initStartIndex = initPage.getStartIndex();
+        }
+
+        List<RArticleEntity> dataList = resourceRepository.getNoticeList(userType, initPageSize, initStartIndex);
+        PageModel pageInfo = new PageModel<RArticleEntity>(dataList, initPageNum, initPageSize);
+        map.put("dataList",dataList);
+        map.put("pageInfo",pageInfo);
+        return map;
+    }
+
+    public Map<String, Object> getPromotionList(Integer userType, Boolean isIndex, Integer pageNum, Integer pageSize) {
+        Map<String,Object> map=new HashMap<String,Object>();
+        Integer initPageNum;
+        Integer initPageSize;
+        Integer initStartIndex;
+        if(isIndex) {
+            initStartIndex = 0;
+            initPageNum = 1;
+            initPageSize = 3;
+
+        } else {
+            InitPage initPage = new InitPage(pageNum, pageSize);
+            initPageNum = initPage.getPageNum();
+            initPageSize = initPage.getPageSize();
+            initStartIndex = initPage.getStartIndex();
+        }
+
+        List<PProductPromotionEntity> dataList = resourceRepository.getPromotionList(userType, initPageSize, initStartIndex);
+        PageModel pageInfo = new PageModel<PProductPromotionEntity>(dataList, initPageNum, initPageSize);
+        map.put("dataList",dataList);
+        map.put("pageInfo",pageInfo);
+        return map;
     }
 
     public List<RRegionEntity> getProvinceList() {

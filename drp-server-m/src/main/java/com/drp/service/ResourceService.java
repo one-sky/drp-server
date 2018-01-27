@@ -18,6 +18,10 @@ public interface ResourceService {
 
     public Integer saveArticle(RArticleEntity entity, Integer userId);
 
+    public Map<String,Object> getNoticeList( Integer userType, Boolean isIndex, Integer pageNum, Integer pageSize);
+
+    public Map<String,Object> getPromotionList( Integer userType, Boolean isIndex, Integer pageNum, Integer pageSize);
+
     public List<RRegionEntity> getProvinceList();
 
     public List<RRegionEntity> getCityByProvince(String provinceId);

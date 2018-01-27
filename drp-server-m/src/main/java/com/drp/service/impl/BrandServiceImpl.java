@@ -6,11 +6,11 @@ import com.drp.entity.*;
 import com.drp.repository.BrandRepository;
 import com.drp.repository.ChannelRepository;
 import com.drp.service.BrandService;
-import com.inheater.erp.common.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +69,7 @@ public class BrandServiceImpl implements BrandService {
             if(distributorId != 0 && brandId !=0 && channelId!=0){
                 DAgentBrandEntity dbAgent =  brandRepository.getAgentBrand(distributorId, brandId, channelId);
                 if(dbAgent ==null){
-                    Timestamp tmp = DateUtil.getCurrentDate();
+                    Timestamp tmp = new Timestamp(new Date().getTime());
                     entity.setStatus("W");
                     entity.setCreateBy(999);
                     entity.setCreateTime(tmp);
