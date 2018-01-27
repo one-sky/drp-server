@@ -4,6 +4,7 @@ import com.drp.Util.*;
 import com.drp.entity.RArticleEntity;
 import com.drp.entity.RBannerEntity;
 import com.drp.Util.Insert;
+import com.drp.entity.RRegionEntity;
 import com.drp.repository.ResourceRepository;
 import com.drp.service.ResourceService;
 import com.inheater.erp.common.utils.DateUtil;
@@ -100,6 +101,18 @@ public class ResouceServiceImpl implements ResourceService {
 
 
         }
+    }
+
+    public List<RRegionEntity> getProvinceList() {
+        return resourceRepository.getProvinceList();
+    }
+
+    public List<RRegionEntity> getCityByProvince(String provinceId) {
+        return resourceRepository.getCityByProvince(provinceId);
+    }
+
+    public List<RRegionEntity> getAreaByCity(String cityId) {
+        return resourceRepository.getAreaByCity(cityId);
     }
 
 

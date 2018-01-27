@@ -2,6 +2,8 @@ package com.drp.repository;
 
 import com.drp.entity.OOrderEntity;
 import com.drp.entity.OOrderItemEntity;
+import com.drp.vo.OrderItemVO;
+import com.drp.vo.OrderSearchVO;
 import com.drp.vo.OrderVO;
 import org.hibernate.criterion.Order;
 
@@ -18,5 +20,7 @@ public interface OrderRepository {
 
     public String cancelOrderList(List<OOrderEntity> orderList);
 
-    public OrderVO getOrderDetailByOrderCode(String orderCode);
+    public List<OrderVO> getOrderList(OrderSearchVO vo);
+
+    public List<OrderItemVO> getOrderDetail(OrderSearchVO vo);
 }

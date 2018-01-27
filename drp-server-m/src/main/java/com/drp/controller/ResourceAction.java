@@ -8,6 +8,7 @@ import com.drp.Util.PageModel;
 import com.drp.entity.RArticleEntity;
 import com.drp.entity.RBannerEntity;
 import com.drp.entity.RChannelResourceEntity;
+import com.drp.entity.RRegionEntity;
 import com.drp.service.ChannelService;
 import com.drp.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +149,67 @@ public class ResourceAction {
         RChannelResourceEntity entity = JSON.parseObject(jsonString,RChannelResourceEntity.class);
         try {
             Integer result=channelService.saveChannelOption(entity);
+            model.setData(result);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
+    /**
+     * 获取省
+     * @return
+     */
+    @RequestMapping(value = "getProvinceList",method= RequestMethod.GET)
+    @ResponseBody
+    public BaseModel<List<RRegionEntity>> getProvinceList(){
+        BaseModel<List<RRegionEntity>> model = new BaseModel<List<RRegionEntity>>();
+        try {
+            List<RRegionEntity> result=resourceService.getProvinceList();
+            model.setData(result);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
+    /**
+     * 获取市 根据省region_code
+     * @return
+     */
+    @RequestMapping(value = "getCityByProvince",method= RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<RRegionEntity>> getCityByProvince(@RequestBody String jsonString){
+        BaseModel<List<RRegionEntity>> model = new BaseModel<List<RRegionEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        String provinceId = object.getString("provinceId");
+        try {
+            List<RRegionEntity> result=resourceService.getCityByProvince(provinceId);
+            model.setData(result);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
+    /**
+     * 获取区 根据市region_code
+     * @return
+     */
+    @RequestMapping(value = "getAreaByCity",method= RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<RRegionEntity>> getAreaByCity(@RequestBody String jsonString){
+        BaseModel<List<RRegionEntity>> model = new BaseModel<List<RRegionEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        String cityId = object.getString("cityId");
+        try {
+            List<RRegionEntity> result=resourceService.getAreaByCity(cityId);
             model.setData(result);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

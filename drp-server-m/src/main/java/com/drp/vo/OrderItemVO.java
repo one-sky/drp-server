@@ -1,5 +1,6 @@
 package com.drp.vo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class OrderItemVO {
@@ -18,9 +19,9 @@ public class OrderItemVO {
 
     private String skuAttr;
 
-    private String originalPrice;
+    private BigDecimal originalPrice;
 
-    private String skuPrice;
+    private BigDecimal skuPrice;
 
     private Integer skuQuantity;
 
@@ -106,19 +107,19 @@ public class OrderItemVO {
         this.skuAttr = skuAttr;
     }
 
-    public String getOriginalPrice() {
+    public BigDecimal getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(String originalPrice) {
+    public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
     }
 
-    public String getSkuPrice() {
+    public BigDecimal getSkuPrice() {
         return skuPrice;
     }
 
-    public void setSkuPrice(String skuPrice) {
+    public void setSkuPrice(BigDecimal skuPrice) {
         this.skuPrice = skuPrice;
     }
 

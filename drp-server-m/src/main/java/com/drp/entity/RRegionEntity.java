@@ -5,7 +5,7 @@ public class RRegionEntity {
     private String regionCode;
     private String regionName;
     private String parentCode;
-    private String level;
+    private Integer level;
 
     public int getId() {
         return id;
@@ -39,11 +39,11 @@ public class RRegionEntity {
         this.parentCode = parentCode;
     }
 
-    public String getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 

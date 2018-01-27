@@ -2,6 +2,7 @@ package com.drp.repository;
 
 import com.drp.entity.RArticleEntity;
 import com.drp.entity.RBannerEntity;
+import com.drp.entity.RRegionEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -25,5 +26,12 @@ public interface ResourceRepository {
     public Integer insertArticle(RArticleEntity entity);
 
     public Integer updateArticle(RArticleEntity entity);
+
+    public List<RRegionEntity> getProvinceList();
+
+    public List<RRegionEntity> getCityByProvince(String provinceId);
+
+    public List<RRegionEntity> getAreaByCity(String cityId);
+
 
 }

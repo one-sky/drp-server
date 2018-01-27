@@ -7,7 +7,6 @@
     <class name="com.drp.entity.RRegionEntity" table="r_region" schema="drp">
         <id name="id">
             <column name="id" sql-type="int(11)"/>
-            <generator class="identity"/>
         </id>
         <property name="regionCode">
             <column name="region_code" sql-type="varchar(20)" length="20"/>
@@ -19,7 +18,7 @@
             <column name="parent_code" sql-type="varchar(20)" length="20"/>
         </property>
         <property name="level">
-            <column name="level" sql-type="varchar(10)" length="10" not-null="true"/>
+            <column name="level" sql-type="int(3)" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>

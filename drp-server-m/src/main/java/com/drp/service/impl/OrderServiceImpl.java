@@ -1,5 +1,7 @@
 package com.drp.service.impl;
 
+import com.drp.Util.InitPage;
+import com.drp.Util.PageModel;
 import com.drp.entity.*;
 import com.drp.repository.OrderRepository;
 import com.drp.repository.ProductRepository;
@@ -319,8 +321,56 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.cancelOrderList(dbEntityList);
     }
 
-    public OrderVO getOrderDetailByOrderCode(String orderCode) {
-        return orderRepository.getOrderDetailByOrderCode(orderCode);
+    public  Map<String,Object> getOrderList(OrderSearchVO vo) {
+        Map<String,Object> map=new HashMap<String,Object>();
+        //默认情况下第一页，每页10条数据
+        if(null==vo.getPage()|| 0==vo.getPage()){
+            vo.setPage(1);
+        }
+        if(null==vo.getPageSize()|| 0==vo.getPageSize()){
+            vo.setPageSize(10);
+        }
+
+        vo.setStartIndex( (vo.getPage()-1)*vo.getPageSize());
+        List<OrderVO> dataList = orderRepository.getOrderList(vo);
+        List<OrderItemVO> orderItemList;
+        List<Integer> orderIds = new ArrayList<Integer>();
+        if(!dataList.isEmpty()) {
+            for(OrderVO order:dataList) {
+                orderIds.add(order.getId());
+            }
+        }
+        if(!dataList.isEmpty()) {
+            OrderSearchVO search = new OrderSearchVO();
+            search.setOrderIds(orderIds);
+            orderItemList = orderRepository.getOrderDetail(search);
+
+            if(!orderItemList.isEmpty()) {
+                List<OrderItemVO> list;
+                for(OrderVO order:dataList) {
+                    int id = order.getId();
+                    list = new ArrayList<OrderItemVO>();
+                    for(OrderItemVO item:orderItemList) {
+                        if(item.getOrderId() == id) {
+                            list.add(item);
+                        }
+                    }
+                    if(!list.isEmpty()) {
+                        order.setOrderItemVOList(list);
+                    }
+                }
+            }
+        }
+        PageModel pageInfo = new PageModel<OrderVO>(dataList, vo.getPage(), vo.getPageSize());
+        map.put("dataList",dataList);
+        map.put("pageInfo",pageInfo);
+        return map;
+    }
+
+    public OrderVO getOrderDetail(OrderSearchVO vo) {
+        OrderVO order = orderRepository.getOrderList(vo).get(0);
+        order.setOrderItemVOList(orderRepository.getOrderDetail(vo));
+        return order;
     }
 
 

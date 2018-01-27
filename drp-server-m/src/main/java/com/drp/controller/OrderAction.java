@@ -5,10 +5,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.drp.Util.BaseModel;
 import com.drp.Util.Constants;
+import com.drp.Util.PageModel;
 import com.drp.entity.DAddressEntity;
 import com.drp.entity.OOrderEntity;
 import com.drp.entity.OOrderItemEntity;
 import com.drp.service.OrderService;
+import com.drp.vo.OrderSearchVO;
 import com.drp.vo.OrderVO;
 import com.drp.vo.ShoppingCartItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("order")
@@ -101,18 +104,46 @@ public class OrderAction {
     }
 
     /**
-     * 获取订单明细
+     * 获取订单列表
+     * distributorId 必须有
      *
      * @return
      */
-    @RequestMapping(value = "getOrderDetailByOrderCode", method = RequestMethod.POST)
+    @RequestMapping(value = "getOrderList", method = RequestMethod.POST)
     @ResponseBody
-    public BaseModel<OrderVO> getOrderDetailByOrderCode(@RequestBody String jsonString) {
+    public BaseModel<List<OrderVO>> getOrderList(@RequestBody String jsonString) {
+        BaseModel<List<OrderVO>> model= new BaseModel<List<OrderVO>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        JSONObject order = object.getJSONObject("order");
+        OrderSearchVO vo = JSONObject.toJavaObject(order, OrderSearchVO.class);
+        try {
+            Map<String,Object> map =  orderService.getOrderList(vo);
+            List<OrderVO> data= (List<OrderVO>) map.get("dataList");
+            PageModel pageInfo= (PageModel) map.get("pageInfo");
+            model.setData(data);
+            model.setPage(pageInfo);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+    }
+
+    /**
+     * 获取订单明细
+     *
+     * orderCode 或者orderIds其中一个
+     * @return
+     */
+    @RequestMapping(value = "getOrderDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<OrderVO> getOrderDetail(@RequestBody String jsonString) {
         BaseModel<OrderVO> model = new BaseModel<OrderVO>();
         JSONObject object = JSON.parseObject(jsonString);
-        String orderCode = object.getString("orderCode");
+        JSONObject orderItem = object.getJSONObject("orderItem");
+        OrderSearchVO vo = JSONObject.toJavaObject(orderItem, OrderSearchVO.class);
         try {
-            OrderVO data =  orderService.getOrderDetailByOrderCode(orderCode);
+            OrderVO data =  orderService.getOrderDetail(vo);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

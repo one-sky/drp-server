@@ -5,6 +5,7 @@ import com.drp.Util.SelectByPrimarkKey;
 import com.drp.Util.Update;
 import com.drp.entity.RArticleEntity;
 import com.drp.entity.RBannerEntity;
+import com.drp.entity.RRegionEntity;
 import com.drp.repository.ResourceRepository;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
@@ -77,6 +78,32 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     public Integer updateArticle(RArticleEntity entity) {
         Session session = this.getCurrentSession();
         return new Update<RArticleEntity>(session, entity).getData();
+    }
+
+    public List<RRegionEntity> getProvinceList() {
+        Session session = this.getCurrentSession();
+        Criteria c = session.createCriteria(RRegionEntity.class);
+        c.add(Restrictions.eq("level", 1))
+                .addOrder( Order.asc("regionCode"));
+        return c.list();
+    }
+
+    public List<RRegionEntity> getCityByProvince(String provinceId) {
+        Session session = this.getCurrentSession();
+        Criteria c = session.createCriteria(RRegionEntity.class);
+        c.add(Restrictions.eq("level", 2))
+                .add(Restrictions.eq("parentCode", provinceId))
+                .addOrder( Order.asc("regionCode"));
+        return c.list();
+    }
+
+    public List<RRegionEntity> getAreaByCity(String cityId) {
+        Session session = this.getCurrentSession();
+        Criteria c = session.createCriteria(RRegionEntity.class);
+        c.add(Restrictions.eq("level", 3))
+                .add(Restrictions.eq("parentCode", cityId))
+                .addOrder( Order.asc("regionCode"));
+        return c.list();
     }
 
 
