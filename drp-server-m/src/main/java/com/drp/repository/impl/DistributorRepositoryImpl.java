@@ -12,6 +12,7 @@ import com.drp.repository.DistributorRepository;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,6 +40,19 @@ public class DistributorRepositoryImpl implements DistributorRepository {
         c.add(Restrictions.eq("userId", id));
         DDistributorEntity result = (DDistributorEntity)c.list().get(0);
         return result;
+    }
+
+    public DDistributorEntity getDistributorVip(Integer distributorId, Integer vipId) {
+        Session session = this.getCurrentSession();
+        DDistributorEntity data;
+        // 获取原价
+        String sqlString="select vip_level as vipName, " +
+                "(select vip_level from d_vip where level_code = " + vipId + ")  as nextVipName, " +
+                "cast(((select points from d_vip where level_code = " + vipId + ") - (select points from d_distributor where id = " + distributorId + ")) as nchar(10)) " +
+                "as nextLevelPoints from d_vip where level_code = " + vipId;
+        SQLQuery sqlQuery=session.createSQLQuery(sqlString);
+        data = (DDistributorEntity) sqlQuery.setResultTransformer(Transformers.aliasToBean(DDistributorEntity.class)).list().get(0);
+        return data;
     }
 
     public List<DAddressEntity> getAddressList(Integer id) {

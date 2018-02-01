@@ -16,7 +16,7 @@ public interface BrandService {
 
     public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId, Integer channelId);
 
-    public List<RBrandEntity> getNewBrandList();
+    public List<RBrandEntity> getNewBrandList(Integer num);
 
     public RBrandEntity getBrand(Integer id);
 

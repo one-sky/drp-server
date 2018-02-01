@@ -21,8 +21,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     protected CategoryRepository categoryRepository;
 
-    public List<PCategoryEntity> getCategoryList() {
-        return categoryRepository.getCategoryList();
+    public List<PCategoryEntity> getCategoryList(Integer userType) {
+        return categoryRepository.getCategoryList(userType);
     }
 
     public PCategoryEntity getCategoryById(Integer id) {

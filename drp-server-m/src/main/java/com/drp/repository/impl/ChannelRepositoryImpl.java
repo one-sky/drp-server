@@ -24,9 +24,11 @@ public class ChannelRepositoryImpl implements ChannelRepository {
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
     }
-    public List<RChannelResourceEntity> getChannelOptionList() {
+    public List<RChannelResourceEntity> getChannelOptionList(Integer userType) {
         Criteria c = getCurrentSession().createCriteria(RChannelResourceEntity.class);
-        c.add(Restrictions.eq("status", 1));
+        if(userType == 1) {
+            c.add(Restrictions.eq("status", 1));
+        }
         return c.list();
     }
 

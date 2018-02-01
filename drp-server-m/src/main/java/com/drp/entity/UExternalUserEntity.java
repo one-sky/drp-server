@@ -13,7 +13,6 @@ public class UExternalUserEntity {
     private String email;
     private int status;
     private Timestamp thisLoginTime;
-    private String mail;
 
     public int getId() {
         return id;
@@ -95,14 +94,6 @@ public class UExternalUserEntity {
         this.thisLoginTime = thisLoginTime;
     }
 
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,7 +113,6 @@ public class UExternalUserEntity {
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
         if (thisLoginTime != null ? !thisLoginTime.equals(that.thisLoginTime) : that.thisLoginTime != null)
             return false;
-        if (mail != null ? !mail.equals(that.mail) : that.mail != null) return false;
 
         return true;
     }
@@ -139,7 +129,6 @@ public class UExternalUserEntity {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + status;
         result = 31 * result + (thisLoginTime != null ? thisLoginTime.hashCode() : 0);
-        result = 31 * result + (mail != null ? mail.hashCode() : 0);
         return result;
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CategoryRepository {
 
-    public List<PCategoryEntity> getCategoryList();
+    public List<PCategoryEntity> getCategoryList(Integer userType);
 
     public PCategoryEntity getCategoryById(Integer id);
 

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.DMessageEntity" table="d_message" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="distributorId">
+            <column name="distributor_id" sql-type="int(11)"/>
+        </property>
+        <property name="messageType">
+            <column name="message_type" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="title">
+            <column name="title" sql-type="varchar(100)" length="100"/>
+        </property>
+        <property name="detail">
+            <column name="detail" sql-type="varchar(1000)" length="1000"/>
+        </property>
+        <property name="haveRead">
+            <column name="have_read" sql-type="char(1)" length="1"/>
+        </property>
+        <property name="createBy">
+            <column name="create_by" sql-type="int(11)"/>
+        </property>
+        <property name="createTime">
+            <column name="create_time" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateBy">
+            <column name="last_update_by" sql-type="int(11)"/>
+        </property>
+        <property name="lastUpdateTime">
+            <column name="last_update_time" sql-type="timestamp"/>
+        </property>
+    </class>
+</hibernate-mapping>

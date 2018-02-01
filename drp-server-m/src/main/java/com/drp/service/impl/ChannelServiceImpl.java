@@ -17,8 +17,8 @@ public class ChannelServiceImpl implements ChannelService {
     @Autowired
     protected ChannelRepository channelRepository;
 
-    public List<RChannelResourceEntity> getChannelOptionList() {
-        return channelRepository.getChannelOptionList();
+    public List<RChannelResourceEntity> getChannelOptionList(Integer userType) {
+        return channelRepository.getChannelOptionList(userType);
     }
 
     public Integer saveChannelOption(RChannelResourceEntity entity) {

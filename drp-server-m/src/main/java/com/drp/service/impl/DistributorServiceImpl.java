@@ -5,15 +5,13 @@ import com.drp.Util.InitPage;
 import com.drp.Util.PageModel;
 import com.drp.entity.*;
 import com.drp.repository.DistributorRepository;
+import com.drp.repository.UserRepository;
 import com.drp.service.DistributorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DistributorServiceImpl implements DistributorService {
@@ -21,12 +19,25 @@ public class DistributorServiceImpl implements DistributorService {
     @Autowired(required = true)
     protected DistributorRepository distributorRepository;
 
+    @Autowired(required = true)
+    protected UserRepository userRepository;
+
     public DDistributorEntity getDistributorDetail(Integer id) {
-        return distributorRepository.getDistributorDetail(id);
+        DDistributorEntity vo = distributorRepository.getDistributorDetail(id);
+        List<Integer> ids = new ArrayList<Integer>();
+        ids.add(vo.getUserId());
+        UExternalUserEntity user = userRepository.getUserList(ids).get(0);
+        DDistributorEntity vip = distributorRepository.getDistributorVip(id, vo.getVipId());
+        BeanUtils.copyProperties(vo, vip);
+        vip.setLastLoginTime(user.getLastLoginTime());
+        vip.setThisLoginTime(user.getThisLoginTime());
+        return vip;
     }
 
     public DDistributorEntity getDistributorByUserId(Integer id) {
-        return distributorRepository.getDistributorByUserId(id);
+        DDistributorEntity vo = distributorRepository.getDistributorByUserId(id);
+
+        return vo;
     }
 
     public Map<String, Object> getAddressList(Integer id) {

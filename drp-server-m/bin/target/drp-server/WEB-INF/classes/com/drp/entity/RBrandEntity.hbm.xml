@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.RBrandEntity" table="r_brand" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="brandName">
+            <column name="brand_name" sql-type="varchar(256)" length="256"/>
+        </property>
+        <property name="categoryId">
+            <column name="category_id" sql-type="int(11)"/>
+        </property>
+        <property name="categoryName">
+            <column name="category_name" sql-type="varchar(45)" length="45" not-null="true"/>
+        </property>
+        <property name="mail">
+            <column name="mail" sql-type="varchar(256)" length="256" not-null="true"/>
+        </property>
+        <property name="qq">
+            <column name="qq" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+        <property name="wechat">
+            <column name="wechat" sql-type="varchar(50)" length="50" not-null="true"/>
+        </property>
+        <property name="firstLetter">
+            <column name="first_letter" sql-type="varchar(2)" length="2" not-null="true"/>
+        </property>
+        <property name="isFinished">
+            <column name="is_finished" sql-type="char(1)" length="1"/>
+        </property>
+        <property name="logo">
+            <column name="logo" sql-type="varchar(1000)" length="1000" not-null="true"/>
+        </property>
+        <property name="description">
+            <column name="description" sql-type="varchar(2000)" length="2000" not-null="true"/>
+        </property>
+        <property name="createBy">
+            <column name="create_by" sql-type="varchar(11)" length="11"/>
+        </property>
+        <property name="createTime">
+            <column name="create_time" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateBy">
+            <column name="last_update_by" sql-type="int(11)"/>
+        </property>
+        <property name="lastUpdateTime">
+            <column name="last_update_time" sql-type="timestamp"/>
+        </property>
+    </class>
+</hibernate-mapping>

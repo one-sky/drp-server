@@ -1,5 +1,7 @@
 package com.drp.repository.impl;
 
+import com.drp.Util.Insert;
+import com.drp.Util.Update;
 import com.drp.entity.DDistributorEntity;
 import com.drp.entity.UExternalUserEntity;
 import com.drp.repository.UserRepository;
@@ -36,15 +38,44 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
+    public Integer updateLoginTime(UExternalUserEntity entity) {
+        Session session = this.getCurrentSession();
+        Integer data = new Update<UExternalUserEntity>(session, entity).getData();
+        return data;
+    }
+
     public List<UExternalUserEntity> getUserList(List<Integer> userIds) {
-        return null;
+        Criteria c = getCurrentSession().createCriteria(UExternalUserEntity.class);
+        c.add(Restrictions.in("id", userIds));
+        if(c.list().isEmpty()){
+            return null;
+        }else{
+            return c.list();
+        }
     }
 
-    public DDistributorEntity register(String phone, String password) {
-        return null;
+    public String register(UExternalUserEntity entity) {
+        Session session = this.getCurrentSession();
+        Integer data = new Insert<UExternalUserEntity>(session, entity).getData();
+        return data + "";
+
     }
 
-    public boolean checkMobileRegister(String phone) {
-        return false;
+    public boolean checkPhoneRegister(String phone) {
+        Criteria c = getCurrentSession().createCriteria(UExternalUserEntity.class);
+        c.add(Restrictions.eq("phone", phone));
+        return !c.list().isEmpty();
+    }
+
+    public Integer updateUser(UExternalUserEntity entity) {
+        Session session = this.getCurrentSession();
+        Integer data = new Update<UExternalUserEntity>(session, entity).getData();
+        return data;
+    }
+
+    public Integer insertDistributor(DDistributorEntity entity) {
+        Session session = this.getCurrentSession();
+        Integer data = new Insert<DDistributorEntity>(session, entity).getData();
+        return data;
     }
 }

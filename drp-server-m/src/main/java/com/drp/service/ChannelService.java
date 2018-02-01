@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChannelService {
 
-    public List<RChannelResourceEntity> getChannelOptionList();
+    public List<RChannelResourceEntity> getChannelOptionList(Integer userType);
 
     public Integer saveChannelOption(RChannelResourceEntity entity);
 

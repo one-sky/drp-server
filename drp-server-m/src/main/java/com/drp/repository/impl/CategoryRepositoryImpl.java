@@ -24,10 +24,14 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         return this.sessionFactory.openSession();
     }
 
-    public List<PCategoryEntity> getCategoryList() {
+    public List<PCategoryEntity> getCategoryList(Integer userType) {
         Criteria c = getCurrentSession().createCriteria(PCategoryEntity.class);
-        c.add(Restrictions.eq("parentId", 0));
-        c.add(Restrictions.eq("status", 1));
+        if(userType == 1) {
+            c.add(Restrictions.eq("status", 1));
+        }
+        c.addOrder( Order.asc("level")).addOrder( Order.asc("parentId"))
+                .addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdateBy"));
+
         return c.list();
 
     }

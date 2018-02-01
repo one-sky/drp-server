@@ -74,11 +74,11 @@ public class BrandRepositoryImpl implements BrandRepository {
      * @param
      * @return
      */
-    public List<RBrandEntity> getNewBrandList() {
+    public List<RBrandEntity> getNewBrandList(Integer num) {
 
         Criteria c = getCurrentSession().createCriteria(RBrandEntity.class);
         c.setFirstResult(0);
-        c.setMaxResults(5);
+        c.setMaxResults(num);
         c.add(Restrictions.eq("isFinished", "Y"))
                 .addOrder( Order.desc("createTime"));
         return c.list();

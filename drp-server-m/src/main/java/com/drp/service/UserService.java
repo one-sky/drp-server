@@ -4,14 +4,17 @@ import com.drp.entity.DDistributorEntity;
 import com.drp.entity.UExternalUserEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
-    DDistributorEntity login(String phone, String password);
+    public DDistributorEntity login(String phone, String password);
 
-    List<UExternalUserEntity> getUserList(List<Integer> userIds);
+    public List<UExternalUserEntity> getUserList(List<Integer> userIds);
 
-    DDistributorEntity register(String phone, String password);
+    public String register(String phone, String password);
 
-    boolean checkMobileRegister(String phone);
+    public boolean checkMobileRegister(String phone);
+
+    public Integer completeDistributor(DDistributorEntity entity);
 
 }

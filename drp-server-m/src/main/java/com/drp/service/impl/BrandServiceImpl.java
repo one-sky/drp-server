@@ -46,8 +46,8 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.getAgentBrand(distributorId, brandId, channelId);
     }
 
-    public List<RBrandEntity> getNewBrandList() {
-        return brandRepository.getNewBrandList();
+    public List<RBrandEntity> getNewBrandList(Integer num) {
+        return brandRepository.getNewBrandList(num);
     }
 
     public RBrandEntity getBrand(Integer id) {

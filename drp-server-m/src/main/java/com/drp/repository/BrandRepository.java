@@ -16,7 +16,7 @@ public interface BrandRepository {
     public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId, Integer channelId);
 
     // 获取最新品牌
-    public List<RBrandEntity> getNewBrandList();
+    public List<RBrandEntity> getNewBrandList(Integer num);
 
     public RBrandEntity getBrand( Integer id);
 

@@ -15,6 +15,9 @@ public interface DistributorRepository {
     // 用于登陆，获取基本信息
     public DDistributorEntity getDistributorByUserId(Integer id);
 
+    // 获取分销商的vip信息
+    public DDistributorEntity getDistributorVip(Integer distributorId, Integer vipId);
+
     // 获取分销商地址列表
     public List<DAddressEntity> getAddressList(Integer id);
 

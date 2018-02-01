@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.DAgentBrandEntity" table="d_agent_brand" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="distributorId">
+            <column name="distributor_id" sql-type="int(11)"/>
+        </property>
+        <property name="brandId">
+            <column name="brand_id" sql-type="int(11)"/>
+        </property>
+        <property name="channelId">
+            <column name="channel_id" sql-type="int(11)"/>
+        </property>
+        <property name="reason">
+            <column name="reason" sql-type="varchar(256)" length="256" not-null="true"/>
+        </property>
+        <property name="status">
+            <column name="status" sql-type="char(1)" length="1"/>
+        </property>
+        <property name="brandCertificate">
+            <column name="brand_certificate" sql-type="varchar(256)" length="256" not-null="true"/>
+        </property>
+        <property name="createBy">
+            <column name="create_by" sql-type="int(11)"/>
+        </property>
+        <property name="createTime">
+            <column name="create_time" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateBy">
+            <column name="last_update_by" sql-type="int(11)"/>
+        </property>
+        <property name="lastUpdateTime">
+            <column name="last_update_time" sql-type="timestamp"/>
+        </property>
+    </class>
+</hibernate-mapping>

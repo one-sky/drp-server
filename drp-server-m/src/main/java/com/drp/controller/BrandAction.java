@@ -26,12 +26,14 @@ public class BrandAction {
      * 获取最新品牌 前5个
      * @return
      */
-    @RequestMapping(value = "getNewBrandList", method = RequestMethod.GET)
+    @RequestMapping(value = "getNewBrandList", method = RequestMethod.POST)
     @ResponseBody
-    public BaseModel<List<RBrandEntity>> getNewBrandList() {
+    public BaseModel<List<RBrandEntity>> getNewBrandList(@RequestBody String jsonString) {
         BaseModel<List<RBrandEntity>> model = new BaseModel<List<RBrandEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        Integer num = object.getInteger("num");
         try {
-            List<RBrandEntity> data =  brandService.getNewBrandList();
+            List<RBrandEntity> data =  brandService.getNewBrandList(num);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface CategoryService {
 
-    public List<PCategoryEntity> getCategoryList();
+    public List<PCategoryEntity> getCategoryList(Integer userType);
 
     public PCategoryEntity getCategoryById(Integer id);
 

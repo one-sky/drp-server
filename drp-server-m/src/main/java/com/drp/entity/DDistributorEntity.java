@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 public class DDistributorEntity {
     private int id;
     private int userId;
+    private String nickName;
     private String name;
     private String contractor;
     private String phone;
@@ -23,6 +24,11 @@ public class DDistributorEntity {
     private String comment;
     private String headUrl;
     private Integer vipId;
+
+    private String vipName;
+    private String nextVipName;
+    private String nextLevelPoints;
+
     private int points;
     private BigDecimal totalAmount;
     private int createBy;
@@ -31,6 +37,50 @@ public class DDistributorEntity {
     private Timestamp lastUpdateTime;
     private String saleChannel;
     private String cooperateMode;
+
+    private Timestamp lastLoginTime;
+    private Timestamp thisLoginTime;
+
+    public String getVipName() {
+        return vipName;
+    }
+
+    public void setVipName(String vipName) {
+        this.vipName = vipName;
+    }
+
+    public String getNextVipName() {
+        return nextVipName;
+    }
+
+    public void setNextVipName(String nextVipName) {
+        this.nextVipName = nextVipName;
+    }
+
+    public String getNextLevelPoints() {
+        return nextLevelPoints;
+    }
+
+    public void setNextLevelPoints(String nextLevelPoints) {
+        this.nextLevelPoints = nextLevelPoints;
+    }
+
+    public Timestamp getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Timestamp lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public Timestamp getThisLoginTime() {
+        return thisLoginTime;
+    }
+
+    public void setThisLoginTime(Timestamp thisLoginTime) {
+        this.thisLoginTime = thisLoginTime;
+    }
+
 
     public int getId() {
         return id;
@@ -46,6 +96,14 @@ public class DDistributorEntity {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getName() {
@@ -260,6 +318,7 @@ public class DDistributorEntity {
         if (points != that.points) return false;
         if (createBy != that.createBy) return false;
         if (lastUpdateBy != that.lastUpdateBy) return false;
+        if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (contractor != null ? !contractor.equals(that.contractor) : that.contractor != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
@@ -293,6 +352,7 @@ public class DDistributorEntity {
     public int hashCode() {
         int result = id;
         result = 31 * result + userId;
+        result = 31 * result + (nickName != null ? nickName.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (contractor != null ? contractor.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);

@@ -28,12 +28,15 @@ public class CategoryAction {
      *
      * @return
      */
-    @RequestMapping(value = "getCategoryList", method = RequestMethod.GET)
+    @RequestMapping(value = "getCategoryList", method = RequestMethod.POST)
     @ResponseBody
-    public BaseModel<List<PCategoryEntity>> getCategoryList() {
+    public BaseModel<List<PCategoryEntity>> getCategoryList(@RequestBody String jsonString) {
         BaseModel<List<PCategoryEntity>> model = new BaseModel<List<PCategoryEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        // -1- 管理员，1-分销商，
+        Integer userType = object.getInteger("userType");
         try {
-            List<PCategoryEntity> data = categoryService.getCategoryList();
+            List<PCategoryEntity> data = categoryService.getCategoryList(userType);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

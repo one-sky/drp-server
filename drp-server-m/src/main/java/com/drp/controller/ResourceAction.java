@@ -190,12 +190,14 @@ public class ResourceAction {
      * 获取可选渠道列表
      * @return
      */
-    @RequestMapping(value = "getChannelOptionList",method= RequestMethod.GET)
+    @RequestMapping(value = "getChannelOptionList",method= RequestMethod.POST)
     @ResponseBody
-    public BaseModel<List<RChannelResourceEntity>> getChannelOptionList(){
+    public BaseModel<List<RChannelResourceEntity>> getChannelOptionList(@RequestBody String jsonString){
         BaseModel<List<RChannelResourceEntity>> result = new BaseModel<List<RChannelResourceEntity>>();
-
-        List<RChannelResourceEntity> data =  channelService.getChannelOptionList();
+        JSONObject object = JSON.parseObject(jsonString);
+        // -1 管理员 1 用户
+        Integer userType = object.getInteger("userType");
+        List<RChannelResourceEntity> data =  channelService.getChannelOptionList(userType);
         result.setData(data);
         return result;
 

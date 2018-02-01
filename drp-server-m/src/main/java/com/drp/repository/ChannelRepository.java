@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChannelRepository {
 
-    public List<RChannelResourceEntity> getChannelOptionList();
+    public List<RChannelResourceEntity> getChannelOptionList(Integer userType);
 
     public RChannelResourceEntity selectChannelOptionByKey(Integer id);
 

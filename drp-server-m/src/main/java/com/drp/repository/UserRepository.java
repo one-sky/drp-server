@@ -9,9 +9,16 @@ public interface UserRepository {
 
     UExternalUserEntity login(String phone, String password);
 
+    Integer updateLoginTime(UExternalUserEntity entity);
+
     List<UExternalUserEntity> getUserList(List<Integer> userIds);
 
-    DDistributorEntity register(String phone, String password);
+    String register(UExternalUserEntity entity);
 
-    boolean checkMobileRegister(String phone);
+    boolean checkPhoneRegister(String phone);
+
+    Integer updateUser(UExternalUserEntity entity);
+
+    Integer insertDistributor(DDistributorEntity entity);
+
 }

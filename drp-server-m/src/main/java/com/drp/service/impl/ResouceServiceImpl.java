@@ -30,7 +30,7 @@ public class ResouceServiceImpl implements ResourceService {
         Integer initPageNum = initPage.getPageNum();
         Integer initPageSize = initPage.getPageSize();
         Integer initStartIndex = initPage.getStartIndex();
-        List<RBannerEntity> dataList = resourceRepository.getBannerList(status, initPageNum, initStartIndex);
+        List<RBannerEntity> dataList = resourceRepository.getBannerList(status, initPageSize, initStartIndex);
         PageModel pageInfo = new PageModel<RBannerEntity>(dataList, initPageNum, initPageSize);
         map.put("dataList",dataList);
         map.put("pageInfo",pageInfo);
