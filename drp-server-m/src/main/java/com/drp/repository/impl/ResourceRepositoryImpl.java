@@ -32,7 +32,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
         c.setMaxResults(pageSize);
         c.add(Restrictions.eq("status", status))
                 .addOrder( Order.asc("sortBy"))
-                .addOrder( Order.desc("lastUpdateBy"));
+                .addOrder( Order.desc("lastUpdateTime"));
         return c.list();
     }
 
@@ -59,7 +59,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
         c.add(Restrictions.eq("displayArea", displayArea));
         c.add(Restrictions.eq("status", status))
                 .addOrder( Order.asc("sortBy"))
-                .addOrder( Order.desc("lastUpdateBy"));
+                .addOrder( Order.desc("lastUpdateTime"));
         return c.list();
     }
 
@@ -145,6 +145,12 @@ public class ResourceRepositoryImpl implements ResourceRepository {
                 .add(Restrictions.eq("parentCode", cityId))
                 .addOrder( Order.asc("regionCode"));
         return c.list();
+    }
+
+    public DPointsEntity getPointRule() {
+        Session session = this.getCurrentSession();
+        Criteria c = session.createCriteria(DPointsEntity.class);
+        return (DPointsEntity)c.list().get(0);
     }
 
 

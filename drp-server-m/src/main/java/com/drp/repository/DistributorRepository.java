@@ -1,9 +1,7 @@
 package com.drp.repository;
 
-import com.drp.entity.DAddressEntity;
-import com.drp.entity.DAgentBrandEntity;
-import com.drp.entity.DDistributorEntity;
-import com.drp.entity.RBrandEntity;
+import com.drp.entity.*;
+import com.drp.vo.SearchVO;
 
 import java.util.List;
 
@@ -31,5 +29,10 @@ public interface DistributorRepository {
     public Integer updateAddress(DAddressEntity entity);
 
     public Integer deleteAddress(Integer id);
+
+    public Integer insertPoint(DPointsHistoryEntity entity);
+
+    public List<DPointsHistoryEntity> getPointList(SearchVO entity);
+
 
 }

@@ -90,9 +90,7 @@ public class OrderAction {
     @ResponseBody
     public BaseModel<String> cancelOrder(@RequestBody String jsonString) {
         BaseModel<String> model = new BaseModel<String>();
-        JSONObject object = JSON.parseObject(jsonString);
-        String string = object.getString("orderList");
-        List<OOrderEntity> orderList = JSON.parseArray(string, OOrderEntity.class);
+        List<OOrderEntity> orderList = JSON.parseArray(jsonString, OOrderEntity.class);
         try {
             String data =  orderService.cancelOrderList(orderList);
             model.setData(data);
@@ -113,9 +111,7 @@ public class OrderAction {
     @ResponseBody
     public BaseModel<List<OrderVO>> getOrderList(@RequestBody String jsonString) {
         BaseModel<List<OrderVO>> model= new BaseModel<List<OrderVO>>();
-        JSONObject object = JSON.parseObject(jsonString);
-        JSONObject order = object.getJSONObject("order");
-        OrderSearchVO vo = JSONObject.toJavaObject(order, OrderSearchVO.class);
+        OrderSearchVO vo = JSON.parseObject(jsonString, OrderSearchVO.class);
         try {
             Map<String,Object> map =  orderService.getOrderList(vo);
             List<OrderVO> data= (List<OrderVO>) map.get("dataList");
@@ -139,9 +135,7 @@ public class OrderAction {
     @ResponseBody
     public BaseModel<OrderVO> getOrderDetail(@RequestBody String jsonString) {
         BaseModel<OrderVO> model = new BaseModel<OrderVO>();
-        JSONObject object = JSON.parseObject(jsonString);
-        JSONObject orderItem = object.getJSONObject("orderItem");
-        OrderSearchVO vo = JSONObject.toJavaObject(orderItem, OrderSearchVO.class);
+        OrderSearchVO vo = JSON.parseObject(jsonString, OrderSearchVO.class);
         try {
             OrderVO data =  orderService.getOrderDetail(vo);
             model.setData(data);

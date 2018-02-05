@@ -22,19 +22,19 @@
             <column name="province" sql-type="varchar(20)" length="20"/>
         </property>
         <property name="provinceDesc">
-            <column name="provinceDesc" sql-type="varchar(45)" length="45" not-null="true"/>
+            <column name="provinceDesc" sql-type="varchar(45)" length="45"/>
         </property>
         <property name="city">
             <column name="city" sql-type="varchar(20)" length="20"/>
         </property>
         <property name="cityDesc">
-            <column name="cityDesc" sql-type="varchar(45)" length="45" not-null="true"/>
+            <column name="cityDesc" sql-type="varchar(45)" length="45"/>
         </property>
         <property name="area">
             <column name="area" sql-type="varchar(20)" length="20"/>
         </property>
         <property name="areaDesc">
-            <column name="areaDesc" sql-type="varchar(45)" length="45" not-null="true"/>
+            <column name="areaDesc" sql-type="varchar(45)" length="45"/>
         </property>
         <property name="detailAddress">
             <column name="detail_address" sql-type="varchar(256)" length="256"/>

@@ -9,8 +9,6 @@ public interface UserRepository {
 
     UExternalUserEntity login(String phone, String password);
 
-    Integer updateLoginTime(UExternalUserEntity entity);
-
     List<UExternalUserEntity> getUserList(List<Integer> userIds);
 
     String register(UExternalUserEntity entity);

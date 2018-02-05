@@ -50,18 +50,28 @@ public class ProductRepositoryImpl implements ProductRepository {
             condition = condition + "productName like %" + vo.getProductName() + "%)";
 
         }
-        if (!StringUtils.isEmpty(vo.getOnline())) {
-
-            condition = condition + "online ='" + vo.getOnline() + "'";
-
+        String online = "";
+        if (null != vo.getUserType()){
+            if(vo.getUserType() == 1) {
+                online = "Y";
+            } else {
+                online = "N";
+            }
+        } else {
+            if(!StringUtils.isEmpty(vo.getOnline())) {
+                online = vo.getOnline();
+            }
         }
+        if(!"".equals(online)) {
+            condition = condition + "m.online ='" + online + "'";
+        }
+
         if (vo.getCategoryIds() != null && !vo.getCategoryIds().isEmpty()) {
             List<Integer> categoryIds=vo.getCategoryIds();
             if (!StringUtils.isEmpty(condition)) {
                 condition = condition + " AND " ;
             }
             String tmp="(";
-            List<Integer> productIds=vo.getProductIds();
             for(Integer category:categoryIds) {
 
                 tmp += category+", ";
@@ -246,7 +256,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         if(null!=distributorId && 0 !=distributorId) {
             c.add(Restrictions.eq("status", 1));
         }
-        c.addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdateBy"));
+        c.addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdatetime"));
         return c.list();
     }
 

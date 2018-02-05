@@ -17,8 +17,10 @@ public interface ChannelRepository {
 
     public List<DChannelEntity> getChannelList(Integer distributorId);
 
-    public DChannelEntity getChannel(Integer distributorId, Integer channelId);
+    public DChannelEntity getChannelById(Integer id);
 
     public Integer insertChannel(DChannelEntity entity);
+
+    public Integer updateChannel(DChannelEntity entity);
 
 }

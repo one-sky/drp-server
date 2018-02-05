@@ -1,11 +1,13 @@
 package com.drp.service.impl;
 
+import com.drp.Util.BeanUtils;
 import com.drp.Util.InitPage;
 import com.drp.Util.PageModel;
 import com.drp.entity.*;
 import com.drp.repository.BrandRepository;
 import com.drp.repository.ChannelRepository;
 import com.drp.service.BrandService;
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,33 +44,35 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.getBrandListByCategoryId(categoryId);
     }
 
-    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId, Integer channelId) {
-        return brandRepository.getAgentBrand(distributorId, brandId, channelId);
+    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId) {
+        return brandRepository.getAgentBrand(distributorId, brandId);
     }
 
     public List<RBrandEntity> getNewBrandList(Integer num) {
         return brandRepository.getNewBrandList(num);
     }
 
-    public RBrandEntity getBrand(Integer id) {
-        return brandRepository.getBrand(id);
+    public RBrandEntity getBrandById(Integer id) {
+        RBrandEntity entity = brandRepository.getBrandById(id);
+        entity.setBrandAttachmentEntityList(this.getBrandAttachment(id));
+        return entity;
     }
 
-    public RBrandAttachmentEntity getBrandAttachment(Integer brandId) {
+    public List<RBrandAttachmentEntity> getBrandAttachment(Integer brandId) {
         return brandRepository.getBrandAttachment(brandId);
     }
 
     public Integer insertAgentBrand(DAgentBrandEntity entity) {
 
         Integer distributorId = entity.getDistributorId();
-        Integer brandId = entity.getDistributorId();
+        Integer brandId = entity.getBrandId();
         Integer channelId = entity.getChannelId();
         // 用户已代理该渠道
-        DChannelEntity channel =channelRepository.getChannel(distributorId, channelId);
+        DChannelEntity channel =channelRepository.getChannelById(channelId);
         if(channel!=null){
             if(distributorId != 0 && brandId !=0 && channelId!=0){
-                DAgentBrandEntity dbAgent =  brandRepository.getAgentBrand(distributorId, brandId, channelId);
-                if(dbAgent ==null){
+                DAgentBrandEntity dbAgent =  brandRepository.getAgentBrand(distributorId, brandId);
+                if(dbAgent == null){
                     Timestamp tmp = new Timestamp(new Date().getTime());
                     entity.setStatus("W");
                     entity.setCreateBy(999);
@@ -76,6 +80,16 @@ public class BrandServiceImpl implements BrandService {
                     entity.setLastUpdateBy(999);
                     entity.setLastUpdateTime(tmp);
                     return brandRepository.insertAgentBrand(entity);
+                } else if("R".equals(dbAgent.getStatus())) {
+                    Timestamp tmp = new Timestamp(new Date().getTime());
+                    BeanUtils.copyProperties(dbAgent, entity);
+                    entity.setStatus("W");
+                    entity.setChannelId(channelId);
+                    entity.setReason(null);
+                    entity.setBrandCertificate(null);
+                    entity.setLastUpdateBy(999);
+                    entity.setLastUpdateTime(tmp);
+                    return brandRepository.updateAgentBrand(entity);
                 }
             }
         }

@@ -7,6 +7,7 @@ import com.drp.entity.*;
 import com.drp.repository.DistributorRepository;
 import com.drp.repository.UserRepository;
 import com.drp.service.DistributorService;
+import com.drp.vo.SearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class DistributorServiceImpl implements DistributorService {
         Integer distributorId = entity.getDistributorId();
         Integer id = entity.getId();
         //新建时
-        if (null == distributorId || distributorId == 0) {
+        if (null == id || id == 0) {
             List<DAddressEntity> list = distributorRepository.getAddressList(distributorId);
             //没有地址
             if (list.isEmpty()) {
@@ -65,18 +66,16 @@ public class DistributorServiceImpl implements DistributorService {
 
             } else {
                 DAddressEntity dbAddress = distributorRepository.selectAddressByKey(id);
-                if (dbAddress == null) {
+                if (dbAddress != null) {
                     return null;
                 }
                 entity.setIsDefault("N");
-
-
             }
             entity.setCreateBy(999);
             entity.setCreateTime(tmp);
             entity.setLastUpdateBy(999);
             entity.setLastUpdateTime(tmp);
-            return distributorRepository.updateAddress(entity);
+            return distributorRepository.insertAddress(entity);
         } else {
             //先查找出改地址的记录信息
             DAddressEntity dbAddress = distributorRepository.selectAddressByKey(entity.getId());
@@ -133,6 +132,25 @@ public class DistributorServiceImpl implements DistributorService {
         entity.setLastUpdateBy(999);
         entity.setLastUpdateTime(tmp);
         return distributorRepository.updateAddress(address);
+    }
+
+    public Map<String, Object> getPointList(SearchVO entity) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (entity.getDistributorId() == 0) {
+            return map;
+        } else {
+            InitPage initPage = new InitPage(entity.getPageNum(), entity.getPageSize());
+            Integer initPageNum = initPage.getPageNum();
+            Integer initPageSize = initPage.getPageSize();
+            Integer initStartIndex = initPage.getStartIndex();
+            entity.setPageSize(initPageSize);
+            entity.setStartIndex(initStartIndex);
+            List<DPointsHistoryEntity> dataList = distributorRepository.getPointList(entity);
+            PageModel pageInfo = new PageModel<DPointsHistoryEntity>(dataList, initPageNum, initPageSize);
+            map.put("dataList", dataList);
+            map.put("pageInfo", pageInfo);
+            return map;
+        }
     }
 
 }

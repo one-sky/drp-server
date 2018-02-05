@@ -3,6 +3,7 @@ package com.drp.service;
 import com.drp.entity.DAddressEntity;
 import com.drp.entity.DAgentBrandEntity;
 import com.drp.entity.DDistributorEntity;
+import com.drp.vo.SearchVO;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,8 @@ public interface DistributorService {
     public Integer deleteAddress(Integer id, Integer distributorId);
 
     public Integer setAddressDefault(Integer id, Integer distributorId);
+
+    public Map<String,Object> getPointList(SearchVO entity);
 
 
 }

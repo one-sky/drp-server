@@ -1,6 +1,7 @@
 package com.drp.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class RBrandEntity {
     private int id;
@@ -14,6 +15,7 @@ public class RBrandEntity {
     private String isFinished;
     private String logo;
     private String description;
+    private List<RBrandAttachmentEntity> brandAttachmentEntityList;
     private String createBy;
     private Timestamp createTime;
     private int lastUpdateBy;
@@ -105,6 +107,14 @@ public class RBrandEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<RBrandAttachmentEntity> getBrandAttachmentEntityList() {
+        return brandAttachmentEntityList;
+    }
+
+    public void setBrandAttachmentEntityList(List<RBrandAttachmentEntity> brandAttachmentEntityList) {
+        this.brandAttachmentEntityList = brandAttachmentEntityList;
     }
 
     public String getCreateBy() {

@@ -70,6 +70,28 @@ public class UserAction {
     }
 
     /**
+     * 修改密码
+     * @return
+     */
+    @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<Integer> updatePassword(@RequestBody String jsonString) {
+        BaseModel<Integer> model = new BaseModel<Integer>();
+        JSONObject object = JSON.parseObject(jsonString);
+        String phone = object.getString("phone");
+        String oldPassword = object.getString("oldPassword");
+        String newPassword = object.getString("newPassword");
+        try {
+            Integer data =  userService.updatePassword(phone, oldPassword, newPassword);
+            model.setData(data);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+    }
+
+    /**
      * 完善用户信息
      * @return
      */

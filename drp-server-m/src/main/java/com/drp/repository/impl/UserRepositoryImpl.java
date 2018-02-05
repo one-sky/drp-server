@@ -38,12 +38,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
-    public Integer updateLoginTime(UExternalUserEntity entity) {
-        Session session = this.getCurrentSession();
-        Integer data = new Update<UExternalUserEntity>(session, entity).getData();
-        return data;
-    }
-
     public List<UExternalUserEntity> getUserList(List<Integer> userIds) {
         Criteria c = getCurrentSession().createCriteria(UExternalUserEntity.class);
         c.add(Restrictions.in("id", userIds));

@@ -19,13 +19,13 @@
             <column name="channel_id" sql-type="int(11)"/>
         </property>
         <property name="reason">
-            <column name="reason" sql-type="varchar(256)" length="256" not-null="true"/>
+            <column name="reason" sql-type="varchar(256)" length="256"/>
         </property>
         <property name="status">
             <column name="status" sql-type="char(1)" length="1"/>
         </property>
         <property name="brandCertificate">
-            <column name="brand_certificate" sql-type="varchar(256)" length="256" not-null="true"/>
+            <column name="brand_certificate" sql-type="varchar(256)" length="256"/>
         </property>
         <property name="createBy">
             <column name="create_by" sql-type="int(11)"/>

@@ -3,8 +3,10 @@ package com.drp.service.impl;
 import com.drp.Util.InitPage;
 import com.drp.Util.PageModel;
 import com.drp.entity.*;
+import com.drp.repository.DistributorRepository;
 import com.drp.repository.OrderRepository;
 import com.drp.repository.ProductRepository;
+import com.drp.repository.ResourceRepository;
 import com.drp.service.OrderService;
 import com.drp.service.ProductService;
 import com.drp.vo.*;
@@ -29,6 +31,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     protected  ProductService productService;
+
+    @Autowired
+    protected DistributorRepository distributorRepository;
+
+    @Autowired
+    protected ResourceRepository resourceRepository;
+
 
     /**
      * 生成订单方法
@@ -279,7 +288,38 @@ public class OrderServiceImpl implements OrderService {
                 dbVO.setPaymentChannel(orderVO.getId()%2 == 0 ?  "alipay_pc_direct" : "wx");
                 dbVO.setLastUpdateBy(999);
                 dbVO.setLastUpdateTime(currentTime);
-                return orderRepository.payOrder(dbVO);
+                // 支付成功，修改用户积分
+                if(orderRepository.payOrder(dbVO) > 0) {
+                    Integer distributorId = orderVO.getDistributorId();
+                    DPointsHistoryEntity entity = new DPointsHistoryEntity();
+                    entity.setDistributorId(distributorId);
+                    // 交易成功赠送积分
+                    entity.setPointsType("1");
+                    DPointsEntity pointRule = resourceRepository.getPointRule();
+                    SearchVO vo = new SearchVO();
+                    vo.setDistributorId(1);
+                    vo.setStartIndex(0);
+                    vo.setPageSize(1);
+                    List<DPointsHistoryEntity> dbEntity = distributorRepository.getPointList(vo);
+                    if(dbEntity.isEmpty()) {
+                        entity.setPointsBefore(0);
+                    } else {
+                        entity.setPointsBefore(((DPointsHistoryEntity)dbEntity.get(0)).getPointsAfter());
+                    }
+                    Integer point = orderVO.getTotalAmount().multiply(new BigDecimal(pointRule.getPointsAmount()))
+                                                            .divide(new BigDecimal(pointRule.getActionAmount())).intValue();
+                    entity.setPoints(point);
+                    entity.setPointsAfter(point + entity.getPointsBefore());
+                    entity.setCreateBy(999);
+                    entity.setCreateTime(currentTime);
+                    entity.setLastUpdateBy(999);
+                    entity.setLastUpdateTime(currentTime);
+                    entity.setOrderId(orderVO.getId());
+                    entity.setOrderNumber(orderVO.getOrderCode());
+                    entity.setOrderTime(orderVO.getOrderTime());
+                    return distributorRepository.insertPoint(entity);
+
+                }
 
             }
         }
@@ -308,6 +348,7 @@ public class OrderServiceImpl implements OrderService {
         for(OOrderEntity entity:dbEntityList) {
             for(OOrderEntity order:orderList) {
                 if(order.getId()==entity.getId()) {
+                    entity.setStatus(0);
                     entity.setCancelType(order.getCancelType());
                     entity.setCancelReason(order.getCancelReason());
                     entity.setCancelTime(tmp);
@@ -367,6 +408,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderVO getOrderDetail(OrderSearchVO vo) {
+        vo.setStartIndex(0);
+        vo.setPageSize(1);
         OrderVO order = orderRepository.getOrderList(vo).get(0);
         order.setOrderItemVOList(orderRepository.getOrderDetail(vo));
         return order;

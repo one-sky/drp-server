@@ -13,6 +13,8 @@ public interface UserService {
 
     public String register(String phone, String password);
 
+    public Integer updatePassword(String phone, String oldPassword, String newPassword);
+
     public boolean checkMobileRegister(String phone);
 
     public Integer completeDistributor(DDistributorEntity entity);

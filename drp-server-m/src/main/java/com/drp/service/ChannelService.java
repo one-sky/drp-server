@@ -13,7 +13,7 @@ public interface ChannelService {
 
     public List<DChannelEntity> getChannelList(Integer distributorId);
 
-    public DChannelEntity getChannel(Integer distributorId, Integer channelId);
+    public DChannelEntity getChannelById(Integer id);
 
     public Integer saveChannel(DChannelEntity entity);
 }

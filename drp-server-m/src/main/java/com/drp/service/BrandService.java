@@ -14,13 +14,13 @@ public interface BrandService {
 
     public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId);
 
-    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId, Integer channelId);
+    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId);
 
     public List<RBrandEntity> getNewBrandList(Integer num);
 
-    public RBrandEntity getBrand(Integer id);
+    public RBrandEntity getBrandById(Integer id);
 
-    public RBrandAttachmentEntity getBrandAttachment(Integer brandId);
+    public List<RBrandAttachmentEntity> getBrandAttachment(Integer brandId);
 
     public Integer insertAgentBrand(DAgentBrandEntity entity);
 }

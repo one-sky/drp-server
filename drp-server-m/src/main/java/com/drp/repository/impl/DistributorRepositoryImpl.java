@@ -4,11 +4,9 @@ import com.drp.Util.Delete;
 import com.drp.Util.Insert;
 import com.drp.Util.SelectByPrimarkKey;
 import com.drp.Util.Update;
-import com.drp.entity.DAddressEntity;
-import com.drp.entity.DAgentBrandEntity;
-import com.drp.entity.DDistributorEntity;
-import com.drp.entity.RBrandEntity;
+import com.drp.entity.*;
 import com.drp.repository.DistributorRepository;
+import com.drp.vo.SearchVO;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -16,6 +14,8 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
 @Repository
@@ -30,9 +30,9 @@ public class DistributorRepositoryImpl implements DistributorRepository {
 
 
     public DDistributorEntity getDistributorDetail(Integer id) {
-
         Session session = this.getCurrentSession();
-        return new SelectByPrimarkKey<DDistributorEntity>("DDistributorEntity", session, id).getData();
+        DDistributorEntity entity = new SelectByPrimarkKey<DDistributorEntity>("DDistributorEntity", session, id).getData();
+        return entity;
     }
 
     public DDistributorEntity getDistributorByUserId(Integer id) {
@@ -47,8 +47,8 @@ public class DistributorRepositoryImpl implements DistributorRepository {
         DDistributorEntity data;
         // 获取原价
         String sqlString="select vip_level as vipName, " +
-                "(select vip_level from d_vip where level_code = " + vipId + ")  as nextVipName, " +
-                "cast(((select points from d_vip where level_code = " + vipId + ") - (select points from d_distributor where id = " + distributorId + ")) as nchar(10)) " +
+                "(select vip_level from d_vip where level_code = " + (vipId + 1) + ")  as nextVipName, " +
+                "cast(((select points from d_vip where level_code = " + (vipId + 1) + ") - (select points from d_distributor where id = " + distributorId + ")) as nchar(10)) " +
                 "as nextLevelPoints from d_vip where level_code = " + vipId;
         SQLQuery sqlQuery=session.createSQLQuery(sqlString);
         data = (DDistributorEntity) sqlQuery.setResultTransformer(Transformers.aliasToBean(DDistributorEntity.class)).list().get(0);
@@ -59,7 +59,7 @@ public class DistributorRepositoryImpl implements DistributorRepository {
         Criteria c = getCurrentSession().createCriteria(DAddressEntity.class);
         c.add(Restrictions.eq("distributorId", id))
                 .addOrder( Order.desc("isDefault"))
-                .addOrder( Order.desc("lastUpdateBy"));
+                .addOrder( Order.desc("lastUpdateTime"));
         return c.list();
     }
 
@@ -89,6 +89,29 @@ public class DistributorRepositoryImpl implements DistributorRepository {
         DAddressEntity entity = new DAddressEntity();
         entity.setId(id);
         return new Delete(session, entity).getData();
+    }
+
+    public Integer insertPoint(DPointsHistoryEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Insert<DPointsHistoryEntity>(session, entity).getData();
+    }
+
+    public List<DPointsHistoryEntity> getPointList(SearchVO entity) {
+        Criteria c = getCurrentSession().createCriteria(PCategoryEntity.class);
+        c.add(Restrictions.eq("distributorId", entity.getDistributorId()));
+
+        if(null != entity.getStartDate() || "".equals(entity.getStartDate())){
+            c.add(Restrictions.ge("orderTime", entity.getStartDate()));
+
+        }
+        if(null != entity.getEndDate() || "".equals(entity.getEndDate())){
+            c.add(Restrictions.le("orderTime", entity.getEndDate()));
+
+        }
+        c.addOrder( Order.desc("lastUpdateTime"));
+        c.setFirstResult(entity.getStartIndex());
+        c.setMaxResults(entity.getPageSize());
+        return c.list();
     }
 
 }

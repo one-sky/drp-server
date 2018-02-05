@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
             //状态未完善
             entity.setLastLoginTime(entity.getThisLoginTime());
             entity.setThisLoginTime(tmp);
-            userRepository.updateLoginTime(entity);
+            userRepository.updateUser(entity);
             if(entity.getStatus() == (int)1){
                 BeanUtils.copyProperties(entity, vo);
                 vo.setId(0);
@@ -69,6 +69,17 @@ public class UserServiceImpl implements UserService {
         entity.setThisLoginTime(tmp);
         entity.setType("D");
         return userRepository.register(entity);
+    }
+
+    public Integer updatePassword(String phone, String oldPassword, String newPassword) {
+        // 判断用户原始密码是否正确
+        UExternalUserEntity dbEntity = userRepository.login(phone, oldPassword);
+        if(null != dbEntity) {
+            dbEntity.setPassword(newPassword);
+            return userRepository.updateUser(dbEntity);
+        }
+        return 0;
+
     }
 
     public boolean checkMobileRegister(String phone) {

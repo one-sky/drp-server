@@ -30,7 +30,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             c.add(Restrictions.eq("status", 1));
         }
         c.addOrder( Order.asc("level")).addOrder( Order.asc("parentId"))
-                .addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdateBy"));
+                .addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdateTime"));
 
         return c.list();
 
@@ -60,7 +60,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         c.add(Restrictions.eq("categoryName", categoryName));
         c.add(Restrictions.eq("status", 1))
                 .addOrder( Order.asc("sortBy"))
-                .addOrder( Order.desc("lastUpdateBy"));
+                .addOrder( Order.desc("lastUpdateTime"));
         return c.list();
     }
 

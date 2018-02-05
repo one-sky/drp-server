@@ -40,8 +40,8 @@ public class ChannelServiceImpl implements ChannelService {
         return channelRepository.getChannelList(distributorId);
     }
 
-    public DChannelEntity getChannel(Integer distributorId, Integer channelId) {
-        return channelRepository.getChannel(distributorId, channelId);
+    public DChannelEntity getChannelById(Integer id) {
+        return channelRepository.getChannelById(id);
     }
 
     public Integer saveChannel(DChannelEntity entity) {

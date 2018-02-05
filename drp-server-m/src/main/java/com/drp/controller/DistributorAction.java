@@ -11,6 +11,7 @@ import com.drp.service.ChannelService;
 import com.drp.service.DistributorService;
 import com.drp.service.ProductService;
 import com.drp.vo.CollectProductVO;
+import com.drp.vo.SearchVO;
 import com.drp.vo.ShoppingCartItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -138,6 +139,26 @@ public class DistributorAction {
 
     }
 
+
+    @RequestMapping(value = "getPoints",method=RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<DPointsHistoryEntity>> getPoints(@RequestBody String jsonString){
+        BaseModel<List<DPointsHistoryEntity>> model = new BaseModel<List<DPointsHistoryEntity>>();
+        SearchVO entity = JSON.parseObject(jsonString, SearchVO.class);
+        try {
+            Map<String, Object> map = distributorService.getPointList(entity);
+            List<DPointsHistoryEntity> data = (List<DPointsHistoryEntity>) map.get("dataList");
+            PageModel pageInfo = (PageModel) map.get("pageInfo");
+            model.setData(data);
+            model.setPage(pageInfo);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
     /**
      * 根据distributorId 和 品牌name 获取分销商同一品牌的不同代理
      * @return
@@ -174,9 +195,8 @@ public class DistributorAction {
         JSONObject object = JSON.parseObject(jsonString);
         Integer distributorId = object.getInteger("distributorId");
         Integer brandId = object.getInteger("brandId");
-        Integer channelId = object.getInteger("channelId");
         try {
-            DAgentBrandEntity data = brandService.getAgentBrand(distributorId, brandId, channelId);
+            DAgentBrandEntity data = brandService.getAgentBrand(distributorId, brandId);
 
             model.setData(data);
         } catch (Exception e) {
@@ -236,10 +256,9 @@ public class DistributorAction {
     public BaseModel<DChannelEntity> getChannel(@RequestBody String jsonString){
         BaseModel<DChannelEntity> model = new BaseModel<DChannelEntity>();
         JSONObject object = JSON.parseObject(jsonString);
-        Integer distributorId = object.getInteger("distributorId");
-        Integer channelId = object.getInteger("channelId");
+        Integer id = object.getInteger("id");
         try {
-            DChannelEntity data = channelService.getChannel(distributorId, channelId);
+            DChannelEntity data = channelService.getChannelById(id);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

@@ -4,23 +4,26 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class SpuSearchVO {
+
+    private Integer userType;  // 查询字段
+
     private Integer productId;
 
-    private List<Integer> productIds;
+    private List<Integer> productIds;  // 查询字段
 
-    private String productName;
+    private String productName;  // 查询字段
 
     private Integer brandId;
 
-    private List<Integer> brandIds;
+    private List<Integer> brandIds;  // 查询字段
 
-    private String brandName;
+    private String brandName;  // 查询字段
 
     private Integer categoryId;
 
-    private List<Integer> categoryIds;
+    private List<Integer> categoryIds;  // 查询字段
 
-    private String categoryName;
+    private String categoryName;  // 查询字段
 
     private String thumbnailImage;
 
@@ -30,7 +33,7 @@ public class SpuSearchVO {
 
     private String salesNum;
 
-    private String online;
+    private String online;  // 查询字段
 
     private Integer page;
 
@@ -42,6 +45,30 @@ public class SpuSearchVO {
 
     private Integer orderDirection;// 排序方向，1为从大到小，2为从小到大。不填的话默认是从大到小
 
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public void setProductId(Integer productId) {
         this.productId = productId;
@@ -89,14 +116,6 @@ public class SpuSearchVO {
 
     public void setThumbnailImage(String thumbnailImage) {
         this.thumbnailImage = thumbnailImage;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getCategoryName() {
@@ -172,14 +191,6 @@ public class SpuSearchVO {
         this.orderDirection = orderDirection;
     }
 
-
-    public Integer getBrandId() {
-        return brandId;
-    }
-
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
-    }
 
     public String getSalesNum() {
         return salesNum;

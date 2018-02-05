@@ -53,7 +53,7 @@ public class BrandAction {
         JSONObject object = JSON.parseObject(jsonString);
         Integer id = object.getInteger("id");
         try {
-            RBrandEntity data =  brandService.getBrand(id);
+            RBrandEntity data =  brandService.getBrandById(id);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());
@@ -88,12 +88,12 @@ public class BrandAction {
      */
     @RequestMapping(value = "getBrandAttachment", method = RequestMethod.POST)
     @ResponseBody
-    public BaseModel<RBrandAttachmentEntity> getBrandAttachment(@RequestBody String jsonString) {
-        BaseModel<RBrandAttachmentEntity> model = new BaseModel<RBrandAttachmentEntity>();
+    public BaseModel<List<RBrandAttachmentEntity>> getBrandAttachment(@RequestBody String jsonString) {
+        BaseModel<List<RBrandAttachmentEntity>> model = new BaseModel<List<RBrandAttachmentEntity>>();
         JSONObject object = JSON.parseObject(jsonString);
         Integer brandId = object.getInteger("brandId");
         try {
-            RBrandAttachmentEntity data =  brandService.getBrandAttachment(brandId);
+            List<RBrandAttachmentEntity> data =  brandService.getBrandAttachment(brandId);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

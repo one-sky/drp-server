@@ -1,6 +1,7 @@
 package com.drp.repository.impl;
 
 import com.drp.Util.Insert;
+import com.drp.Util.Update;
 import com.drp.entity.DAgentBrandEntity;
 import com.drp.entity.RBrandAttachmentEntity;
 import com.drp.entity.RBrandEntity;
@@ -49,28 +50,30 @@ public class BrandRepositoryImpl implements BrandRepository {
 
     public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId) {
         Criteria c = getCurrentSession().createCriteria(RBrandEntity.class);
-        c.setFirstResult(0);
-        c.setMaxResults(5);
-        c.add(Restrictions.eq("categoryId", categoryId));
+        if(null != categoryId && categoryId > 0 ) {
+            c.add(Restrictions.eq("categoryId", categoryId));
+            c.setFirstResult(0);
+            c.setMaxResults(5);
+        }
         c.add(Restrictions.eq("isFinished", "Y"))
                 .addOrder( Order.desc("createTime"));
         return c.list();
     }
 
-    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId, Integer channelId) {
+    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId) {
         Criteria c = getCurrentSession().createCriteria(DAgentBrandEntity.class);
         c.add(Restrictions.eq("distributorId", distributorId));
         c.add(Restrictions.eq("brandId", brandId));
-        c.add(Restrictions.eq("channelId", channelId));
-        if(c.list().isEmpty()){
-            return null;
+        c.addOrder(Order.desc("lastUpdateTime"));
+        List<DAgentBrandEntity> result = c.list();
+        if(!result.isEmpty()) {
+            return result.get(0);
         }
-        DAgentBrandEntity result = (DAgentBrandEntity)c.list().get(0);
-        return result;
+        return null;
     }
 
     /**
-     * 获取最新品牌，只获取前五条记录
+     * 获取最新品牌，只获取前num条记录
      * @param
      * @return
      */
@@ -85,7 +88,7 @@ public class BrandRepositoryImpl implements BrandRepository {
 
     }
 
-    public RBrandEntity getBrand(Integer id) {
+    public RBrandEntity getBrandById(Integer id) {
 
         Criteria c = getCurrentSession().createCriteria(RBrandEntity.class);
         c.add(Restrictions.eq("id", id));
@@ -94,16 +97,20 @@ public class BrandRepositoryImpl implements BrandRepository {
 
     }
 
-    public RBrandAttachmentEntity getBrandAttachment(Integer brandId) {
+    public List<RBrandAttachmentEntity> getBrandAttachment(Integer brandId) {
         Criteria c = getCurrentSession().createCriteria(RBrandAttachmentEntity.class);
         c.add(Restrictions.eq("brandId", brandId));
-        RBrandAttachmentEntity result = (RBrandAttachmentEntity)c.list().get(0);
-        return result;
+        return c.list();
     }
 
     public Integer insertAgentBrand(DAgentBrandEntity entity) {
         Session session = this.getCurrentSession();
         return new Insert<DAgentBrandEntity>(session, entity).getData();
+    }
+
+    public Integer updateAgentBrand(DAgentBrandEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Update<DAgentBrandEntity>(session, entity).getData();
     }
 
     public String isAgentBrand(Integer distributorId, Integer skuId) {

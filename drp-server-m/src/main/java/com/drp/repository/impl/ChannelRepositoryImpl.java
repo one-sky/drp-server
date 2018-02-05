@@ -53,18 +53,18 @@ public class ChannelRepositoryImpl implements ChannelRepository {
         return c.list();
     }
 
-    public DChannelEntity getChannel(Integer distributorId, Integer channelId) {
-        Criteria c = getCurrentSession().createCriteria(DChannelEntity.class);
-        c.add(Restrictions.eq("distributorId", distributorId));
-        c.add(Restrictions.eq("channelId", channelId));
-        if(c.list().isEmpty()){
-            return null;
-        }
-        return (DChannelEntity)c.list().get(0);
+    public DChannelEntity getChannelById(Integer id) {
+        Session session = this.getCurrentSession();
+        return new SelectByPrimarkKey<DChannelEntity>("DChannelEntity", session, id).getData();
     }
 
     public Integer insertChannel(DChannelEntity entity) {
         Session session = this.getCurrentSession();
         return new Insert<DChannelEntity>(session, entity).getData();
+    }
+
+    public Integer updateChannel(DChannelEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Update<DChannelEntity>(session, entity).getData();
     }
 }

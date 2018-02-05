@@ -13,16 +13,18 @@ public interface BrandRepository {
 
     public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId);
 
-    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId, Integer channelId);
+    public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId);
 
     // 获取最新品牌
     public List<RBrandEntity> getNewBrandList(Integer num);
 
-    public RBrandEntity getBrand( Integer id);
+    public RBrandEntity getBrandById( Integer id);
 
-    public RBrandAttachmentEntity getBrandAttachment(Integer brandId);
+    public List<RBrandAttachmentEntity> getBrandAttachment(Integer brandId);
 
     public Integer insertAgentBrand(DAgentBrandEntity entity);
+
+    public Integer updateAgentBrand(DAgentBrandEntity entity);
 
     public String isAgentBrand(Integer distributorId, Integer skuId);
 }

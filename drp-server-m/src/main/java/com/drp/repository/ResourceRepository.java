@@ -1,9 +1,6 @@
 package com.drp.repository;
 
-import com.drp.entity.PProductPromotionEntity;
-import com.drp.entity.RArticleEntity;
-import com.drp.entity.RBannerEntity;
-import com.drp.entity.RRegionEntity;
+import com.drp.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -37,6 +34,8 @@ public interface ResourceRepository {
     public List<RRegionEntity> getCityByProvince(String provinceId);
 
     public List<RRegionEntity> getAreaByCity(String cityId);
+
+    public DPointsEntity getPointRule();
 
 
 }
