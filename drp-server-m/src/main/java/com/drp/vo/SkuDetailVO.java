@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SkuDetailVO {
 
-    private Integer SkuId;
+    private Integer skuId;
 
     private List<SkuPriceDetailVO> priceList;
 
@@ -14,11 +14,11 @@ public class SkuDetailVO {
     private BigDecimal specialPrice;
 
     public Integer getSkuId() {
-        return SkuId;
+        return skuId;
     }
 
     public void setSkuId(Integer skuId) {
-        SkuId = skuId;
+        skuId = skuId;
     }
 
     public List<SkuPriceDetailVO> getPriceList() {

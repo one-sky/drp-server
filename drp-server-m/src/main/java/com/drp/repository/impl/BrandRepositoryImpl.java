@@ -35,11 +35,15 @@ public class BrandRepositoryImpl implements BrandRepository {
             brandName = new String();
         }
         Session session = this.getCurrentSession();
-        String sqlString="select * from r_Brand where is_finished = 'Y' and brand_name like '%"+brandName +"%'";
-        if(distributorId != 0 && status != null && !"".equals(status)) {
-            sqlString += " and id in (select brand_id from d_agent_brand where status = '"
-                    + status + "' and distributor_id = " + distributorId + ")";
+        String sqlString="select * from r_brand where is_finished = 'Y' and brand_name like '%"+brandName +"%'";
+        if(null == status ) {
+            sqlString += " and id not in ";
+            status = "%%";
+        } else {
+            sqlString += " and id in ";
         }
+        sqlString += " (select brand_id from d_agent_brand where status = '"
+                + status + "' and distributor_id = " + distributorId + ")";
         SQLQuery sqlQuery=session.createSQLQuery(sqlString);
         sqlQuery.addEntity(RBrandEntity.class);
         sqlQuery.setFirstResult(startIndex);

@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -33,7 +30,13 @@ public class BrandServiceImpl implements BrandService {
         Integer initPageNum = initPage.getPageNum();
         Integer initPageSize = initPage.getPageSize();
         Integer initStartIndex = initPage.getStartIndex();
-        List<RBrandEntity> dataList = brandRepository.getBrandListByAgentBrand(distributorId, brandName, status, initPageSize, initStartIndex);
+        if(null == status || "".equals(status)) {
+            status = "Y";
+        }
+        List<RBrandEntity> dataList = new ArrayList<RBrandEntity>();
+        if (null != distributorId && distributorId != 0) {
+            dataList = brandRepository.getBrandListByAgentBrand(distributorId, brandName, status, initPageSize, initStartIndex);
+        }
         PageModel pageInfo = new PageModel<RBrandEntity>(dataList, initPageNum, initPageSize);
         map.put("dataList",dataList);
         map.put("pageInfo",pageInfo);

@@ -1,6 +1,7 @@
 package com.drp.vo;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class CollectProductVO {
 
@@ -9,6 +10,8 @@ public class CollectProductVO {
     private Integer distributorId;
 
     private Integer spuId;//商品id
+
+    private Integer brandId;
 
     private String price;
 
@@ -23,6 +26,24 @@ public class CollectProductVO {
     private Integer sortBy;//排序
 
     private String retailPrice;//商品零售价现价
+
+    private Timestamp createTime;//关注时间
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
 
     public Integer getId() {
         return id;

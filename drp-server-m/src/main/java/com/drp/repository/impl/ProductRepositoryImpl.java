@@ -35,7 +35,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         Session session = this.getCurrentSession();
 
         String sql = "select m.*,CONCAT(n.lowPrice,'~',n.highPrice) as priceRange from (\n" +
-                "select a.id as productId, product_name as productName, a.brand_id as brandId, a.thumbnailImage, a.online,  \n" +
+                "select a.id as productId, product_name as productName, a.brand_id as brandId, a.thumbnailImage, a.online, a.spu_attr as spuAttr,  \n" +
                 " brand_name as brandName, a.category_id as categoryId, min(c.retail_price) as retailPrice, cast(sum(sales_num) as char(11)) as salesNum \n" +
                 " from p_product_category as a join r_brand as b on a.brand_id = b.id join p_product_sku as c on a.id = c.product_id \n" +
                 " group by a.id , product_name, a.brand_id, brand_name, a.category_id) as m join (\n" +
@@ -186,64 +186,40 @@ public class ProductRepositoryImpl implements ProductRepository {
         return list;
     }
 
-    public List<SkuPriceDetailVO> getPriceList(List<Integer> skuIdList, Integer distributorId) {
+    public List<SkuPriceDetailVO> getPriceList(Integer distributorId, Integer spuId) {
         Session session = this.getCurrentSession();
 
-        String sql = "select a.id as skuId, b.low_quantity as startPiece, b.high_quantity as endPiece, \n" +
+        String sql = "select a.id as skuId, a.sku_attr as skuAttr, a.retail_price as retailPrice, " +
+                "a.min_price as minPrice, a.sku_img as skuImg, b.low_quantity as startPiece, b.high_quantity as endPiece, \n" +
                 "b.level as levelId, b.price, a.stock \n" +
                 "from p_product_sku as a join p_product_quantity as b on a.id = b.sku_id ";
 
         String condition = "";
+        if (null!=spuId && 0!=spuId) {
+            condition = condition + " where a.product_id = " + spuId;
+        }
         if (null!=distributorId && 0!=distributorId) {
-            condition = condition + "where b.level = (select vip_id from d_distributor where id =" + distributorId + ") ";
+            condition = condition + " and b.level = (select vip_id from d_distributor where id =" + distributorId + ") ";
         }
-        if(null!=skuIdList && !skuIdList.isEmpty()){
-            String tmp="(";
-            for(Integer skuId:skuIdList) {
-
-                tmp += skuId+", ";
-
-            }
-            int length=tmp.length();
-            if(length>1){
-
-                tmp="a.id in "+tmp.substring(0,length-2)+")";
-                condition += " and "+tmp;
-            }else{
-                //报错
-            }
-        }
-        sql += condition + "order by a.id, startPiece";
+        sql += condition + " order by a.id, startPiece";
 
         SQLQuery sqlQuery=session.createSQLQuery(sql);
         List<SkuPriceDetailVO> list=sqlQuery.setResultTransformer(Transformers.aliasToBean(SkuPriceDetailVO.class)).list();
         return list;
     }
 
-    public List<SkuPriceDetailVO> getPriceListByDistributorId(List<Integer> skuIdList, Integer distributorId) {
+    public List<SkuPriceDetailVO> getPriceListByDistributorId( Integer distributorId, Integer spuId) {
         Session session = this.getCurrentSession();
 
         String sql = "select sku_id as skuId, low_quantity as startPiece, high_quantity as endPiece, price, stock, " +
                 " 'Y' as special from p_skuprice_distributor where distributor_id = " +
-                distributorId + " and sku_id in ";
+                distributorId + " ";
 
-        String tmp="(";
-        if(null!=skuIdList && !skuIdList.isEmpty()){
-
-            for(Integer skuId:skuIdList) {
-
-                tmp += skuId+", ";
-
-            }
-            int length=tmp.length();
-            if(length>1){
-
-                tmp = tmp.substring(0,length-2)+")";
-            }else{
-                //报错
-            }
+        String tmp="";
+        if (null!=spuId && 0!=spuId) {
+            tmp = tmp + " and sku_id in (select id from p_product_sku where product_id = " + spuId + ") ";
         }
-        sql += tmp + "order by sku_id, startPiece";
+        sql += tmp + " order by sku_id, startPiece";
 
         SQLQuery sqlQuery=session.createSQLQuery(sql);
         List<SkuPriceDetailVO> list=sqlQuery.setResultTransformer(Transformers.aliasToBean(SkuPriceDetailVO.class)).list();
@@ -256,18 +232,18 @@ public class ProductRepositoryImpl implements ProductRepository {
         if(null!=distributorId && 0 !=distributorId) {
             c.add(Restrictions.eq("status", 1));
         }
-        c.addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdatetime"));
+        c.addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdateTime"));
         return c.list();
     }
 
     public List<CollectProductVO> getCollectionProductList(Integer distributorId, Integer pageSize, Integer startIndex) {
         Session session = this.getCurrentSession();
-        String sqlString="SELECT a.id, a.distributor_id as distributorId, a.sort_by as sortBy, c.*,\n" +
+        String sqlString="SELECT a.id, a.create_time as createTime, b.brand_id as brandId, a.distributor_id as distributorId, a.sort_by as sortBy, c.*,\n" +
                 "b.product_name as spuName, cast(a.price as nchar) as price, b.thumbnailImage, b.online\n" +
                 " FROM d_collection as a join p_product_category as b on a.product_id = b.id join (\n" +
                 " select product_id as spuId, cast(min(retail_price)as nchar) as retailPrice, cast(sum(stock) as nchar) as stock from p_product_sku group by spuId ) \n" +
                 " as c on b.id = c.spuId\n" +
-                " where a.distributor_id = " + distributorId + " order by a.sort_by, a.last_update_time";
+                " where a.distributor_id = " + distributorId + " order by a.sort_by, a.create_time";
         SQLQuery sqlQuery=session.createSQLQuery(sqlString);
         sqlQuery.setFirstResult(startIndex);
         sqlQuery.setMaxResults(pageSize);
@@ -292,7 +268,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             }else{
                 //报错
             }
-            sqlString += " where id in (" + tmp + ")";
+            sqlString += " where product_id in (" + tmp + ")";
         }
 
 

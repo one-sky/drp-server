@@ -18,10 +18,34 @@ public class SkuPriceDetailVO {
 
     private Integer stock; // 库存
 
+    private String skuAttr;
+
+    private String skuImg;
+
+    private BigDecimal retailPrice;
+
+    private BigDecimal minPrice;
+
     private String special;//是否设定的特殊分销商特定价格, 生成订单时是否为原价(promotionId undefined且special 'N'时为原价
 
     public Integer getLevelId() {
         return levelId;
+    }
+
+    public BigDecimal getRetailPrice() {
+        return retailPrice;
+    }
+
+    public void setRetailPrice(BigDecimal retailPrice) {
+        this.retailPrice = retailPrice;
+    }
+
+    public BigDecimal getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(BigDecimal minPrice) {
+        this.minPrice = minPrice;
     }
 
     public void setLevelId(Integer levelId) {
@@ -72,8 +96,24 @@ public class SkuPriceDetailVO {
         this.stock = stock;
     }
 
+    public String getSkuImg() {
+        return skuImg;
+    }
+
+    public void setSkuImg(String skuImg) {
+        this.skuImg = skuImg;
+    }
+
     public void setSpecial(String special) {
         this.special = special;
+    }
+
+    public String getSkuAttr() {
+        return skuAttr;
+    }
+
+    public void setSkuAttr(String skuAttr) {
+        this.skuAttr = skuAttr;
     }
 
     public Integer getSkuId() {

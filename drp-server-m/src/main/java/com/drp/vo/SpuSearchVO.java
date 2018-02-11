@@ -35,13 +35,15 @@ public class SpuSearchVO {
 
     private String online;  // 查询字段
 
+    private String spuAttr;
+
     private Integer page;
 
     private Integer pageSize;
 
     private Integer startIndex;
 
-    private String orderField; // 排序字段，可选值：productId,priceOrder,salesNum,lastUpdateTime 分别对应：默认排序，按价格排序，按销量排序和按新品排序
+    private String orderField; // 排序字段，可选值：productId,retailPrice,salesNum,lastUpdateTime 分别对应：默认排序，按价格排序，按销量排序和按新品排序
 
     private Integer orderDirection;// 排序方向，1为从大到小，2为从小到大。不填的话默认是从大到小
 
@@ -206,5 +208,13 @@ public class SpuSearchVO {
 
     public void setOnline(String online) {
         this.online = online;
+    }
+
+    public String getSpuAttr() {
+        return spuAttr;
+    }
+
+    public void setSpuAttr(String spuAttr) {
+        this.spuAttr = spuAttr;
     }
 }

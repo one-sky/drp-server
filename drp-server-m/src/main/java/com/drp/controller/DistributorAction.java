@@ -358,7 +358,7 @@ public class DistributorAction {
     }
 
     /**
-     * 批量关注商品
+     * 获取购物车列表
      * @return
      */
     @RequestMapping(value="getShoppingCartList",method=RequestMethod.POST)
@@ -366,12 +366,17 @@ public class DistributorAction {
     public  BaseModel<List<ShoppingCartItemVO>> getShoppingCartList(@RequestBody String jsonString){
         BaseModel<List<ShoppingCartItemVO>> model = new BaseModel<List<ShoppingCartItemVO>>();
         JSONObject object = JSON.parseObject(jsonString);
-        Integer distributorId = object.getInteger("distributorId");
+        Integer distributorId ;
         Integer type;
         if(object.containsKey("type")) {
             type = object.getInteger("type");
         }else {
             type = null;
+        }
+        if(object.containsKey("distributorId")) {
+            distributorId = object.getInteger("distributorId");
+        }else {
+            distributorId = null;
         }
 
         try {

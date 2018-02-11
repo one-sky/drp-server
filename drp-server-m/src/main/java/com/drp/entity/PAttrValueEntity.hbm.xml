@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.drp.entity.PAttrValueEntity" table="p_attr_value" schema="drp">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+            <generator class="identity"/>
+        </id>
+        <property name="attrId">
+            <column name="attr_id" sql-type="int(11)"/>
+        </property>
+        <property name="attrValue">
+            <column name="attr_value" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="createBy">
+            <column name="create_by" sql-type="int(11)"/>
+        </property>
+        <property name="createTime">
+            <column name="create_time" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateBy">
+            <column name="last_update_by" sql-type="int(11)"/>
+        </property>
+        <property name="lastUpdateTime">
+            <column name="last_update_time" sql-type="timestamp"/>
+        </property>
+        <property name="status">
+            <column name="status" sql-type="char(1)" length="1"/>
+        </property>
+        <property name="spuIds">
+            <column name="spu_ids" sql-type="varchar(125)" length="125" not-null="true"/>
+        </property>
+        <property name="sortBy">
+            <column name="sort_by" sql-type="int(11)"/>
+        </property>
+    </class>
+</hibernate-mapping>

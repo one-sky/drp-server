@@ -12,10 +12,10 @@ public interface ProductRepository {
     public List<SkuPriceDetailVO> getPriceListPromotion(Integer spuId, Integer skuId);
 
     // 根据分销商等级获取sku价格列表
-    public List<SkuPriceDetailVO> getPriceList(List<Integer> skuIdList, Integer distributorId);
+    public List<SkuPriceDetailVO> getPriceList(Integer distributorId, Integer spuId);
 
     // 根据分销商获取特殊商品
-    public List<SkuPriceDetailVO> getPriceListByDistributorId(List<Integer> skuIdList, Integer distributorId);
+    public List<SkuPriceDetailVO> getPriceListByDistributorId(Integer distributorId, Integer spuId);
 
     // 获取spu的artilce列表
     public List<PProductArticleEntity> getArticleList(Integer spuId, Integer distributorId);

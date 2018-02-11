@@ -147,6 +147,9 @@
                 <value>classpath:com/drp/entity/RRegionEntity.hbm.xml</value>
                 <value>classpath:com/drp/entity/UExternalUserEntity.hbm.xml</value>
                 <value>classpath:com/drp/entity/DDistributorEntity.hbm.xml</value>
+                <value>classpath:com/drp/entity/PAttrValueEntity.hbm.xml</value>
+                <value>classpath:com/drp/entity/PCategoryAttrEntity.hbm.xml</value>
+                <value>classpath:com/drp/entity/PAttrValueEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

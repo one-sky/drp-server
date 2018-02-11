@@ -2,8 +2,11 @@ package com.drp.repository.impl;
 
 import com.drp.Util.Insert;
 import com.drp.Util.Update;
+import com.drp.entity.PAttrValueEntity;
+import com.drp.entity.PCategoryAttrEntity;
 import com.drp.entity.PCategoryEntity;
 import com.drp.repository.CategoryRepository;
+import com.drp.vo.AttrVO;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -44,6 +47,34 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             return null;
         }
         return (PCategoryEntity)c.list().get(0);
+    }
+
+    public List<PCategoryAttrEntity> getAttributeList(Integer userType, List<Integer> categoryIds) {
+        Criteria c = getCurrentSession().createCriteria(PCategoryAttrEntity.class);
+        if(userType == 1) {
+            c.add(Restrictions.eq("status", "Y"));
+        }
+        if(!categoryIds.isEmpty()) {
+            c.add(Restrictions.in("categoryId", categoryIds));
+        }
+        c.addOrder( Order.asc("categoryId"));
+        c.addOrder( Order.desc("lastUpdateTime"));
+        return c.list();
+    }
+
+    public List<PAttrValueEntity> getAttrValueList(Integer userType, List<Integer> attrIds) {
+        Criteria c = getCurrentSession().createCriteria(PAttrValueEntity.class);
+        if(userType == 1) {
+            c.add(Restrictions.eq("status", "Y"));
+        }
+        if(!attrIds.isEmpty()) {
+            c.add(Restrictions.in("attrId", attrIds));
+        }
+        c.addOrder( Order.asc("attrId"));
+        c.addOrder( Order.asc("sortBy"));
+        c.addOrder( Order.desc("lastUpdateTime"));
+        c.addOrder( Order.asc("id"));
+        return c.list();
     }
 
     public List<PCategoryEntity> getCategoryByParentId(Integer parentId) {

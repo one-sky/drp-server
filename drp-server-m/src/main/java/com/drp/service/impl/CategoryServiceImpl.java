@@ -3,17 +3,18 @@ package com.drp.service.impl;
 import com.drp.Util.BeanUtils;
 import com.drp.Util.InitPage;
 import com.drp.Util.PageModel;
+import com.drp.entity.PAttrValueEntity;
+import com.drp.entity.PCategoryAttrEntity;
 import com.drp.entity.PCategoryEntity;
 import com.drp.repository.CategoryRepository;
 import com.drp.service.CategoryService;
+import com.drp.vo.AttrVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Attr;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -27,6 +28,44 @@ public class CategoryServiceImpl implements CategoryService {
 
     public PCategoryEntity getCategoryById(Integer id) {
         return categoryRepository.getCategoryById(id);
+    }
+
+    public List<AttrVO> getAttributeList(Integer userType, List<Integer> categoryIds) {
+        List<AttrVO> result = new ArrayList<AttrVO>();
+        List<PCategoryAttrEntity> attrList = categoryRepository.getAttributeList(userType, categoryIds);
+        List<Integer> attrIds = new ArrayList<Integer>();
+        if(!attrList.isEmpty()) {
+            for(PCategoryAttrEntity vo : attrList) {
+                AttrVO a = new AttrVO();
+                BeanUtils.copyProperties(vo, a);
+                result.add(a);
+                attrIds.add(vo.getId());
+            }
+        }
+        List<PAttrValueEntity> attrValueEntities = new ArrayList<PAttrValueEntity>();
+        if(!attrIds.isEmpty()) {
+            attrValueEntities = categoryRepository.getAttrValueList(userType, attrIds);
+        }
+
+        if(!attrValueEntities.isEmpty()) {
+            List<PAttrValueEntity> attrs;
+            for(AttrVO vo : result) {
+                attrs = new ArrayList<PAttrValueEntity>();
+                Integer id = vo.getId();
+                for(PAttrValueEntity entity:attrValueEntities) {
+                    if(entity.getAttrId() == id) {
+                        attrs.add(entity);
+                    } else {
+                        break;
+                    }
+                }
+                vo.setAttrValueEntityList(attrs);
+
+            }
+        }
+
+        return result;
+
     }
 
     public List<PCategoryEntity> getCategoryByParentId(Integer parentId) {

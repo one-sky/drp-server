@@ -7,6 +7,7 @@ import com.drp.Util.Constants;
 import com.drp.Util.PageModel;
 import com.drp.entity.PCategoryEntity;
 import com.drp.service.CategoryService;
+import com.drp.vo.AttrVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,29 @@ public class CategoryAction {
         Integer userType = object.getInteger("userType");
         try {
             List<PCategoryEntity> data = categoryService.getCategoryList(userType);
+            model.setData(data);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+    }
+
+    /**
+     * 获取属性列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "getAttributeList", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<AttrVO>> getAttributeList(@RequestBody String jsonString) {
+        BaseModel<List<AttrVO>> model = new BaseModel<List<AttrVO>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        // -1- 管理员，1-分销商，
+        Integer userType = object.getInteger("userType");
+        List<Integer> categoryIds =  (List)object.getJSONArray("categoryIds");
+        try {
+            List<AttrVO> data = categoryService.getAttributeList(userType, categoryIds);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());
