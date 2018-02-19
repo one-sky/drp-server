@@ -67,9 +67,7 @@ public class OrderAction {
     @ResponseBody
     public BaseModel<Integer> payOrder(@RequestBody String jsonString) {
         BaseModel<Integer> model = new BaseModel<Integer>();
-        JSONObject object = JSON.parseObject(jsonString);
-        JSONObject order = object.getJSONObject("order");
-        OOrderEntity orderVO = JSONObject.toJavaObject(order, OOrderEntity.class);
+        OOrderEntity orderVO = JSON.parseObject(jsonString, OOrderEntity.class);
 
         try {
             Integer data =  orderService.payOrder(orderVO);

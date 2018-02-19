@@ -47,7 +47,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         String condition = "";
         if (!StringUtils.isEmpty(vo.getProductName())) {
 
-            condition = condition + "productName like %" + vo.getProductName() + "%)";
+            condition = condition + "productName like %" + vo.getProductName() + "%";
 
         }
         String online = "";

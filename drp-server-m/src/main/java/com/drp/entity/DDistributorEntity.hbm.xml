@@ -64,7 +64,7 @@
             <column name="head_url" sql-type="varchar(256)" length="256"/>
         </property>
         <property name="vipId">
-            <column name="vip_id" sql-type="int(11)" not-null="true"/>
+            <column name="vip_id" sql-type="int(11)" />
         </property>
         <property name="points">
             <column name="points" sql-type="int(11)"/>

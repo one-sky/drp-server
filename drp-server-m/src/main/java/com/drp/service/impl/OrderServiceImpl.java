@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
         // 获取价格
         List<Integer> skuIdList=new ArrayList<Integer>();
         for(ShoppingCartItemVO vo:shoppingCartItemVOList){
-            skuIdList.add(vo.getSpuId());
+            skuIdList.add(vo.getSkuId());
         }
 
         List<List<SkuPriceDetailVO>> priceList= productRepository.searchPrice(skuIdList, distributorId);
@@ -226,9 +226,9 @@ public class OrderServiceImpl implements OrderService {
         if(null!=buyerMessage && !buyerMessage.equals("")){
             orderVO.setBuyerMessage(buyerMessage);
         }
-        orderVO.setArea(addressVO.getArea());
-        orderVO.setCity(addressVO.getCity());
-        orderVO.setProvince(addressVO.getProvince());
+        orderVO.setArea(addressVO.getAreaDesc());
+        orderVO.setCity(addressVO.getCityDesc());
+        orderVO.setProvince(addressVO.getProvinceDesc());
         orderVO.setDetailAddress(addressVO.getDetailAddress());
         orderVO.setReceiverPhone(addressVO.getPhone());
         orderVO.setReceiverName(addressVO.getReceiverName());
@@ -270,7 +270,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 插入订单明细
         orderRepository.insertOrderItemList(orderItemVOList, data);
-        return "成功";
+        return data + "";
 
     }
 
@@ -285,7 +285,7 @@ public class OrderServiceImpl implements OrderService {
                 dbVO.setStatus(20);
                 dbVO.setPaymentStatus(2);
                 dbVO.setPaymentTime(currentTime);
-                dbVO.setPaymentChannel(orderVO.getId()%2 == 0 ?  "alipay_pc_direct" : "wx");
+                dbVO.setPaymentChannel(orderVO.getPaymentChannel());
                 dbVO.setLastUpdateBy(999);
                 dbVO.setLastUpdateTime(currentTime);
                 // 支付成功，修改用户积分
@@ -297,7 +297,7 @@ public class OrderServiceImpl implements OrderService {
                     entity.setPointsType("1");
                     DPointsEntity pointRule = resourceRepository.getPointRule();
                     SearchVO vo = new SearchVO();
-                    vo.setDistributorId(1);
+                    vo.setDistributorId(distributorId);
                     vo.setStartIndex(0);
                     vo.setPageSize(1);
                     List<DPointsHistoryEntity> dbEntity = distributorRepository.getPointList(vo);
@@ -317,7 +317,16 @@ public class OrderServiceImpl implements OrderService {
                     entity.setOrderId(orderVO.getId());
                     entity.setOrderNumber(orderVO.getOrderCode());
                     entity.setOrderTime(orderVO.getOrderTime());
-                    return distributorRepository.insertPoint(entity);
+                    if(distributorRepository.insertPoint(entity) > 0 ) {
+                        // 修改分销商个人信息的point与totalAmount
+                        DDistributorEntity distributorEntity = distributorRepository.getDistributorDetail(distributorId);
+                        distributorEntity.setPoints(distributorEntity.getPoints() + point);
+                        distributorEntity.setTotalAmount(distributorEntity.getTotalAmount().add(orderVO.getTotalAmount()));
+                        distributorEntity.setLastUpdateTime(currentTime);
+                        distributorRepository.updateDistributor(distributorEntity);
+
+                    }
+
 
                 }
 

@@ -42,6 +42,11 @@ public class DistributorRepositoryImpl implements DistributorRepository {
         return result;
     }
 
+    public Integer updateDistributor(DDistributorEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Update<DDistributorEntity>(session, entity).getData();
+    }
+
     public DDistributorEntity getDistributorVip(Integer distributorId, Integer vipId) {
         Session session = this.getCurrentSession();
         DDistributorEntity data;
@@ -97,15 +102,19 @@ public class DistributorRepositoryImpl implements DistributorRepository {
     }
 
     public List<DPointsHistoryEntity> getPointList(SearchVO entity) {
-        Criteria c = getCurrentSession().createCriteria(PCategoryEntity.class);
+        Criteria c = getCurrentSession().createCriteria(DPointsHistoryEntity.class);
         c.add(Restrictions.eq("distributorId", entity.getDistributorId()));
 
-        if(null != entity.getStartDate() || "".equals(entity.getStartDate())){
+        if(null != entity.getStartDate() && !"".equals(entity.getStartDate())){
             c.add(Restrictions.ge("orderTime", entity.getStartDate()));
 
         }
-        if(null != entity.getEndDate() || "".equals(entity.getEndDate())){
+        if(null != entity.getEndDate() && !"".equals(entity.getEndDate())){
             c.add(Restrictions.le("orderTime", entity.getEndDate()));
+
+        }
+        if(null != entity.getOrderCode() && !"".equals(entity.getOrderCode())){
+            c.add(Restrictions.ge("orderNumber", entity.getOrderCode()));
 
         }
         c.addOrder( Order.desc("lastUpdateTime"));
