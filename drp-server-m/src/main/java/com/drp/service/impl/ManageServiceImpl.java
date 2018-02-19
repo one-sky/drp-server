@@ -7,11 +7,15 @@ import com.drp.entity.DDistributorEntity;
 import com.drp.entity.DPointsEntity;
 import com.drp.entity.DPointsHistoryEntity;
 import com.drp.entity.RBrandEntity;
+import com.drp.repository.BrandRepository;
 import com.drp.repository.DistributorRepository;
 import com.drp.repository.ManageRepository;
+import com.drp.repository.ProductRepository;
 import com.drp.service.ManageService;
+import com.drp.vo.AgentBrandVO;
 import com.drp.vo.ManageUserVO;
 import com.drp.vo.SearchVO;
+import com.drp.vo.SpuSearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,12 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     protected DistributorRepository distributorRepository;
+
+    @Autowired
+    protected ProductRepository productRepository;
+
+    @Autowired
+    protected BrandRepository brandRepository;
 
     public Map<String, Object> getUserList(ManageUserVO entity, Integer pageNum, Integer pageSize) {
         Map<String,Object> map=new HashMap<String,Object>();
@@ -113,6 +123,66 @@ public class ManageServiceImpl implements ManageService {
         Integer initStartIndex = initPage.getStartIndex();
         List<RBrandEntity> brandList = manageRepository.getBrandList(entity, initPageSize, initStartIndex);
         PageModel pageInfo = new PageModel<RBrandEntity>(brandList, initPageNum, initPageSize);
+        map.put("dataList",brandList);
+        map.put("pageInfo",pageInfo);
+        return map;
+    }
+
+    public Integer saveBrand(RBrandEntity entity) {
+        Timestamp tmp = new Timestamp(new Date().getTime());
+        Integer id = entity.getId();
+        //新建时
+        if (null == id || id == 0) {
+            entity.setCreateBy("999");
+            entity.setCreateTime(tmp);
+            entity.setLastUpdateBy(999);
+            entity.setLastUpdateTime(tmp);
+            entity.setIsFinished("Y");
+            return manageRepository.insertBrand(entity);
+        } else {
+            // 若修改了品牌所属类目，需要判断该品牌下是否有商品，否则类目不一致
+            RBrandEntity dbBrand = brandRepository.getBrandById(entity.getId());
+            if(dbBrand.getCategoryId() != entity.getCategoryId()) {
+                SpuSearchVO vo = new SpuSearchVO();
+                List<Integer> brandIds = new ArrayList<Integer>();
+                List<Integer> categoryIds = new ArrayList<Integer>();
+                brandIds.add(dbBrand.getId());
+                categoryIds.add(dbBrand.getCategoryId());
+                vo.setBrandIds(brandIds);
+                vo.setCategoryIds(categoryIds);
+                vo.setStartIndex(0);
+                vo.setPageSize(1);
+                if(!productRepository.getProductList(vo).isEmpty()) {
+                    return -10;
+                }
+            }
+            entity.setLastUpdateBy(999);
+            entity.setLastUpdateTime(tmp);
+            return manageRepository.updateBrand(entity);
+        }
+    }
+
+    public Integer deleteBrand(Integer brandId) {
+        SpuSearchVO vo = new SpuSearchVO();
+        List<Integer> brandIds = new ArrayList<Integer>();
+        brandIds.add(brandId);
+        vo.setBrandIds(brandIds);
+        vo.setStartIndex(0);
+        vo.setPageSize(1);
+        if(!productRepository.getProductList(vo).isEmpty()) {
+            return -10;
+        }
+        return manageRepository.deleteBrand(brandId);
+    }
+
+    public Map<String, Object> getAgentBrandList(AgentBrandVO entity, Integer pageNum, Integer pageSize) {
+        Map<String,Object> map=new HashMap<String,Object>();
+        InitPage initPage = new InitPage(pageNum, pageSize);
+        Integer initPageNum = initPage.getPageNum();
+        Integer initPageSize = initPage.getPageSize();
+        Integer initStartIndex = initPage.getStartIndex();
+        List<AgentBrandVO> brandList = manageRepository.getAgentBrandList(entity, initPageSize, initStartIndex);
+        PageModel pageInfo = new PageModel<AgentBrandVO>(brandList, initPageNum, initPageSize);
         map.put("dataList",brandList);
         map.put("pageInfo",pageInfo);
         return map;

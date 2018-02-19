@@ -16,28 +16,28 @@
             <column name="category_id" sql-type="int(11)"/>
         </property>
         <property name="categoryName">
-            <column name="category_name" sql-type="varchar(45)" length="45" not-null="true"/>
+            <column name="category_name" sql-type="varchar(45)" length="45"/>
         </property>
         <property name="mail">
-            <column name="mail" sql-type="varchar(256)" length="256" not-null="true"/>
+            <column name="mail" sql-type="varchar(256)" length="256" />
         </property>
         <property name="qq">
-            <column name="qq" sql-type="varchar(20)" length="20" not-null="true"/>
+            <column name="qq" sql-type="varchar(20)" length="20" />
         </property>
         <property name="wechat">
-            <column name="wechat" sql-type="varchar(50)" length="50" not-null="true"/>
+            <column name="wechat" sql-type="varchar(50)" length="50" />
         </property>
         <property name="firstLetter">
-            <column name="first_letter" sql-type="varchar(2)" length="2" not-null="true"/>
+            <column name="first_letter" sql-type="varchar(2)" length="2" />
         </property>
         <property name="isFinished">
             <column name="is_finished" sql-type="char(1)" length="1"/>
         </property>
         <property name="logo">
-            <column name="logo" sql-type="varchar(1000)" length="1000" not-null="true"/>
+            <column name="logo" sql-type="varchar(1000)" length="1000" />
         </property>
         <property name="description">
-            <column name="description" sql-type="varchar(2000)" length="2000" not-null="true"/>
+            <column name="description" sql-type="varchar(2000)" length="2000" />
         </property>
         <property name="createBy">
             <column name="create_by" sql-type="varchar(11)" length="11"/>

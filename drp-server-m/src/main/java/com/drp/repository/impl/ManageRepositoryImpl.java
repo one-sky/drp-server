@@ -1,8 +1,12 @@
 package com.drp.repository.impl;
 
+import com.drp.Util.Delete;
+import com.drp.Util.Insert;
+import com.drp.Util.Update;
 import com.drp.entity.DDistributorEntity;
 import com.drp.entity.RBrandEntity;
 import com.drp.repository.ManageRepository;
+import com.drp.vo.AgentBrandVO;
 import com.drp.vo.ManageUserVO;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
@@ -93,5 +97,65 @@ public class ManageRepositoryImpl implements ManageRepository {
 
         c.addOrder( Order.desc("createTime"));
         return c.list();
+    }
+
+    public Integer insertBrand(RBrandEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Insert<RBrandEntity>(session, entity).getData();
+    }
+
+    public Integer updateBrand(RBrandEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Update<RBrandEntity>(session, entity).getData();
+    }
+
+    public Integer deleteBrand(Integer id) {
+        Session session = this.getCurrentSession();
+        RBrandEntity entity = new RBrandEntity();
+        entity.setId(id);
+        return new Delete(session, entity).getData();
+    }
+
+    public List<AgentBrandVO> getAgentBrandList(AgentBrandVO entity, Integer pageSize, Integer startIndex) {
+        Session session = this.getCurrentSession();
+
+        String sql = "select a.id, a.distributor_id as distributorId, b.nick_name as nickName, \n" +
+                "a.brand_id as brandId, c.brand_name as brandName, \n" +
+                "c.category_name as categoryName, c.category_id as categoryId, \n" +
+                "a.channel_id as channelId, d.channel_name as channelName,\n" +
+                "a.reason, a.status, a.brand_certificate as brandCertificate, a.create_time as createTime \n" +
+                "from d_agent_brand as a \n" +
+                "join d_distributor as b on a.distributor_id = b.id \n" +
+                "join r_brand as c on a.brand_id = c.id \n" +
+                "join r_channel_resource as d on a.channel_id = d.id";
+
+        String condition = "where id > 0 ";
+        if (!StringUtils.isEmpty(entity.getBrandName())) {
+            condition = condition + " and c.brand_name like %" + entity.getBrandName() + "%";
+        }
+        if(null!=entity.getStatus()) {
+            condition = condition + " and a.status ='" + entity.getStatus() + "'";
+        }
+
+        if (0!=entity.getCategoryId()) {
+            condition = condition + " and c.category_id  = " + entity.getCategoryId();
+        }
+
+        if (0!=entity.getChannelId()) {
+            condition = condition + " and a.channel_id  = " + entity.getChannelId();
+        }
+
+        if (!StringUtils.isEmpty(condition)) {
+            sql += condition;
+        }
+
+
+        sql += " order by a.create_time desc";
+
+        SQLQuery sqlQuery=session.createSQLQuery(sql);
+        sqlQuery.setFirstResult(startIndex);
+        sqlQuery.setMaxResults(pageSize).setResultTransformer(Transformers.aliasToBean(AgentBrandVO.class));
+        List<AgentBrandVO> list=sqlQuery.list();
+        return list;
     }
 }
