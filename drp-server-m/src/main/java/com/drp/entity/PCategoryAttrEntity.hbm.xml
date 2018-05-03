@@ -27,8 +27,5 @@
         <property name="lastUpdateTime">
             <column name="last_update_time" sql-type="timestamp"/>
         </property>
-        <property name="status">
-            <column name="status" sql-type="char(1)" length="1"/>
-        </property>
     </class>
 </hibernate-mapping>

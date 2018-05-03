@@ -12,10 +12,10 @@ public interface ProductRepository {
     public List<SkuPriceDetailVO> getPriceListPromotion(Integer spuId, Integer skuId);
 
     // 根据分销商等级获取sku价格列表
-    public List<SkuPriceDetailVO> getPriceList(Integer distributorId, Integer spuId);
+    public List<SkuPriceDetailVO> getPriceList(Integer distributorId, Integer spuId, Integer skuId);
 
     // 根据分销商获取特殊商品
-    public List<SkuPriceDetailVO> getPriceListByDistributorId(Integer distributorId, Integer spuId);
+    public List<SkuPriceDetailVO> getPriceListByDistributorId(Integer distributorId, Integer spuId, Integer skuId);
 
     // 获取spu的artilce列表
     public List<PProductArticleEntity> getArticleList(Integer spuId, Integer distributorId);
@@ -45,4 +45,28 @@ public interface ProductRepository {
 
     // 修改库存
     public Integer updateSkuLockStock(List skuList);
+
+    public PProductCategoryEntity getProductById(Integer id);
+
+    public Integer insertProduct(PProductCategoryEntity entity);
+
+    public Integer updateProduct(PProductCategoryEntity entity);
+
+    public PProductSkuEntity getSkuById(Integer id);
+
+    public Integer insertSku(PProductSkuEntity entity);
+
+    public Integer updateSku(PProductSkuEntity entity);
+
+    public Integer deletePriceList(Integer skuId);
+
+    public Integer insertPriceList(Integer skuId, List<PProductQuantityEntity> entity);
+
+    public List<PSkupriceDistributorEntity> selectSpecialPriceList(Integer distributorId, Integer skuId);
+
+    public Integer deleteSpecialPriceList(Integer distributorId, Integer skuId);
+
+    public Integer insertSpecialPriceList(Integer distributorId, Integer skuId, List<PSkupriceDistributorEntity> entity);
+
+
 }

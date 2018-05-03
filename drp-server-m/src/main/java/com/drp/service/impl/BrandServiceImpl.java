@@ -32,7 +32,10 @@ public class BrandServiceImpl implements BrandService {
         Integer initStartIndex = initPage.getStartIndex();
         if(null == status || "".equals(status)) {
             status = "Y";
+        } else if("all".equals(status)) {
+            status = null;
         }
+
         List<RBrandEntity> dataList = new ArrayList<RBrandEntity>();
         if (null != distributorId && distributorId != 0) {
             dataList = brandRepository.getBrandListByAgentBrand(distributorId, brandName, status, initPageSize, initStartIndex);
@@ -43,8 +46,8 @@ public class BrandServiceImpl implements BrandService {
         return map;
     }
 
-    public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId) {
-        return brandRepository.getBrandListByCategoryId(categoryId);
+    public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId, Integer userType) {
+        return brandRepository.getBrandListByCategoryId(categoryId, userType);
     }
 
     public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId) {
@@ -99,5 +102,9 @@ public class BrandServiceImpl implements BrandService {
 
         return 0;
 
+    }
+
+    public List<RBrandEntity> getAgentBrandByChannel(Integer distributorId, Integer channelId) {
+        return brandRepository.getAgentBrandByChannel(distributorId, channelId);
     }
 }

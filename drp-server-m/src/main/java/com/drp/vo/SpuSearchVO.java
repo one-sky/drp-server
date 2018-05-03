@@ -37,6 +37,8 @@ public class SpuSearchVO {
 
     private String spuAttr;
 
+    private String size;
+
     private Integer page;
 
     private Integer pageSize;
@@ -216,5 +218,13 @@ public class SpuSearchVO {
 
     public void setSpuAttr(String spuAttr) {
         this.spuAttr = spuAttr;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

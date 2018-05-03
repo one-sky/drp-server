@@ -6,6 +6,8 @@ public class SkuPriceDetailVO {
 
     private Integer skuId; // skuId
 
+    private String skuCode;
+
     private Integer levelId;//会员等级ID
 
     private Integer promotionId;//促销ID
@@ -17,6 +19,8 @@ public class SkuPriceDetailVO {
     private BigDecimal price;//对应价格
 
     private Integer stock; // 库存
+
+    private Integer salesNum;
 
     private String skuAttr;
 
@@ -30,6 +34,14 @@ public class SkuPriceDetailVO {
 
     public Integer getLevelId() {
         return levelId;
+    }
+
+    public String getSkuCode() {
+        return skuCode;
+    }
+
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
     }
 
     public BigDecimal getRetailPrice() {
@@ -122,5 +134,13 @@ public class SkuPriceDetailVO {
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
+    }
+
+    public Integer getSalesNum() {
+        return salesNum;
+    }
+
+    public void setSalesNum(Integer salesNum) {
+        this.salesNum = salesNum;
     }
 }

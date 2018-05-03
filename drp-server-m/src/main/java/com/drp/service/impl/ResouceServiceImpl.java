@@ -1,11 +1,8 @@
 package com.drp.service.impl;
 
 import com.drp.Util.*;
-import com.drp.entity.PProductPromotionEntity;
-import com.drp.entity.RArticleEntity;
-import com.drp.entity.RBannerEntity;
+import com.drp.entity.*;
 import com.drp.Util.Insert;
-import com.drp.entity.RRegionEntity;
 import com.drp.repository.ResourceRepository;
 import com.drp.service.ResourceService;
 import org.springframework.beans.BeanUtils;
@@ -150,6 +147,14 @@ public class ResouceServiceImpl implements ResourceService {
         map.put("dataList",dataList);
         map.put("pageInfo",pageInfo);
         return map;
+    }
+
+    public PProductPromotionEntity getPromotionById(Integer id) {
+        return resourceRepository.getPromotionById(id);
+    }
+
+    public List<PPromoteProductEntity> getProductPromotion(Integer promotionId, Integer skuId) {
+        return resourceRepository.getProductPromotion(promotionId, skuId);
     }
 
     public List<RRegionEntity> getProvinceList() {

@@ -10,7 +10,7 @@ public class PAttrValueEntity {
     private Timestamp createTime;
     private int lastUpdateBy;
     private Timestamp lastUpdateTime;
-    private String status;
+    private int status;
     private String spuIds;
     private int sortBy;
 
@@ -70,11 +70,11 @@ public class PAttrValueEntity {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -110,7 +110,7 @@ public class PAttrValueEntity {
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
         if (lastUpdateTime != null ? !lastUpdateTime.equals(that.lastUpdateTime) : that.lastUpdateTime != null)
             return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (status != that.status) return false;
         if (spuIds != null ? !spuIds.equals(that.spuIds) : that.spuIds != null) return false;
 
         return true;
@@ -125,7 +125,7 @@ public class PAttrValueEntity {
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + lastUpdateBy;
         result = 31 * result + (lastUpdateTime != null ? lastUpdateTime.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + status;
         result = 31 * result + (spuIds != null ? spuIds.hashCode() : 0);
         result = 31 * result + sortBy;
         return result;

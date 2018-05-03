@@ -25,27 +25,44 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public UExternalUserEntity login(String phone, String password){
-        Criteria c = getCurrentSession().createCriteria(UExternalUserEntity.class);
-        c.add(Restrictions.eq("phone", phone));
-        c.add(Restrictions.eq("password", password));
-        if(c.list().isEmpty()){
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(UExternalUserEntity.class);
+            c.add(Restrictions.eq("phone", phone));
+            c.add(Restrictions.eq("password", password));
+            if (c.list().isEmpty()) {
+                return null;
+            } else {
+                UExternalUserEntity result = (UExternalUserEntity) c.list().get(0);
+                return result;
+            }
+        }catch (Exception e) {
+            System.exit(1);
             return null;
-        }else{
-            UExternalUserEntity result = (UExternalUserEntity)c.list().get(0);
-            return result;
+        } finally {
+            session.close();
         }
 
 
     }
 
     public List<UExternalUserEntity> getUserList(List<Integer> userIds) {
-        Criteria c = getCurrentSession().createCriteria(UExternalUserEntity.class);
-        c.add(Restrictions.in("id", userIds));
-        if(c.list().isEmpty()){
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(UExternalUserEntity.class);
+            c.add(Restrictions.in("id", userIds));
+            if(c.list().isEmpty()){
+                return null;
+            }else{
+                return c.list();
+            }
+        }catch (Exception e) {
+            System.exit(1);
             return null;
-        }else{
-            return c.list();
+        } finally {
+            session.close();
         }
+
     }
 
     public String register(UExternalUserEntity entity) {
@@ -56,9 +73,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public boolean checkPhoneRegister(String phone) {
-        Criteria c = getCurrentSession().createCriteria(UExternalUserEntity.class);
-        c.add(Restrictions.eq("phone", phone));
-        return !c.list().isEmpty();
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(UExternalUserEntity.class);
+            c.add(Restrictions.eq("phone", phone));
+            return !c.list().isEmpty();
+        }catch (Exception e) {
+            System.exit(1);
+            return false;
+        } finally {
+            session.close();
+        }
     }
 
     public Integer updateUser(UExternalUserEntity entity) {

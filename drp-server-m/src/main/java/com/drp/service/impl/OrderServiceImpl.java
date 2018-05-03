@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
         PSkupriceDistributorEntity pSkupriceDistributorEntity  = new PSkupriceDistributorEntity();
 
 
-        //是否都上架
+        //获取商品判断是否都上架
         SpuSearchVO searchVO = new SpuSearchVO();
         List<Integer> spuIds = new ArrayList<Integer>();
         for(ShoppingCartItemVO vo:shoppingCartItemVOList){
@@ -132,12 +132,14 @@ public class OrderServiceImpl implements OrderService {
             //设置原价 会员等级最低的，起批价1件的无促销的时候的价格
             for(SkuPriceDetailVO price: originalPrice) {
                 if (skuId.equals(price.getSkuId())) {
-                    totalAmount = totalAmount.add(price.getPrice());
+                    totalAmount = totalAmount.add(price.getPrice().multiply(new BigDecimal(quantity)));
                     orderItemVO.setOrginalPrice(price.getPrice());
                     break;
                 }
             }
 
+
+            // 批发
             if( type.equals(1)) {
 
                 //设置特殊价格
@@ -145,7 +147,7 @@ public class OrderServiceImpl implements OrderService {
                     if (skuId.equals(special.getSkuId()) && quantity <=special.getEndPiece()
                             && quantity >=special.getStartPiece()) {
                         if(special.getStock()>=quantity) {
-                            paidAmount = paidAmount.add(special.getPrice());
+                            paidAmount = paidAmount.add(special.getPrice().multiply(new BigDecimal(quantity)));
                             orderItemVO.setSkuPrice(special.getPrice());
 
                             // 设置库存减少
@@ -165,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
                         if (skuId.equals(promote.getSkuId()) && quantity <=promote.getEndPiece()
                                 && quantity >=promote.getStartPiece()) {
                             if(promote.getStock()>=vo.getQuantity()) {
-                                paidAmount = paidAmount.add(promote.getPrice());
+                                paidAmount = paidAmount.add(promote.getPrice().multiply(new BigDecimal(quantity)));
                                 orderItemVO.setSkuPrice(promote.getPrice());
 
                                 // 设置库存减少
@@ -181,25 +183,23 @@ public class OrderServiceImpl implements OrderService {
                             break;
                         }
                     }
-                    if(error.contains(String.valueOf(skuId))) {
-                        // 不满足特殊价格促销价格时设置普通价格
-                        if (null == orderItemVO.getSkuPrice() || orderItemVO.getSkuPrice().equals(0)) {
-                            for (SkuPriceDetailVO common : commonPrice) {
-                                if (skuId.equals(common.getSkuId()) && quantity <= common.getEndPiece()
-                                        && quantity >= common.getStartPiece()) {
-                                    if (common.getStock() >= vo.getQuantity()) {
-                                        // 设置库存减少
-                                        skuEntity.setId(skuId);
-                                        skuEntity.setChangeStock(-1*quantity);
-                                        skuList.add(skuEntity);
-                                        paidAmount = paidAmount.add(common.getPrice());
-                                        orderItemVO.setSkuPrice(common.getPrice());
+                    // 不满足特殊价格促销价格时设置普通价格
+                    if (null == orderItemVO.getSkuPrice() || orderItemVO.getSkuPrice().equals(0)) {
+                        for (SkuPriceDetailVO common : commonPrice) {
+                            if (skuId.equals(common.getSkuId()) && quantity <= common.getEndPiece()
+                                    && quantity >= common.getStartPiece()) {
+                                if (common.getStock() >= vo.getQuantity()) {
+                                    // 设置库存减少
+                                    skuEntity.setId(skuId);
+                                    skuEntity.setChangeStock(-1*quantity);
+                                    skuList.add(skuEntity);
+                                    paidAmount = paidAmount.add(common.getPrice().multiply(new BigDecimal(quantity)));
+                                    orderItemVO.setSkuPrice(common.getPrice());
 
-                                    } else {
-                                        error += skuId +"的库存不足;";
-                                    }
-                                    break;
+                                } else {
+                                    error += skuId +"的库存不足;";
                                 }
+                                break;
                             }
                         }
                     }
@@ -323,7 +323,7 @@ public class OrderServiceImpl implements OrderService {
                         distributorEntity.setPoints(distributorEntity.getPoints() + point);
                         distributorEntity.setTotalAmount(distributorEntity.getTotalAmount().add(orderVO.getTotalAmount()));
                         distributorEntity.setLastUpdateTime(currentTime);
-                        distributorRepository.updateDistributor(distributorEntity);
+                        return distributorRepository.updateDistributor(distributorEntity);
 
                     }
 
@@ -353,6 +353,8 @@ public class OrderServiceImpl implements OrderService {
             }
             orderIds.add(entity.getId());
         }
+
+        // 查找该订单// 查找该订单
         List<OOrderEntity> dbEntityList= this.searchOrderById(orderIds);
         for(OOrderEntity entity:dbEntityList) {
             for(OOrderEntity order:orderList) {
@@ -389,6 +391,8 @@ public class OrderServiceImpl implements OrderService {
                 orderIds.add(order.getId());
             }
         }
+
+        // 获取每一个订单的明细列表
         if(!dataList.isEmpty()) {
             OrderSearchVO search = new OrderSearchVO();
             search.setOrderIds(orderIds);

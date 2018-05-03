@@ -39,7 +39,7 @@ public class OrderVO {
     //交易流水号
     private String trancationId;
 
-    //支付状态 0-未付款 1-部分付款 2-已支付
+    //支付状态 0-未付款 2-已支付
     private Byte paymentStatus;
 
     private String paymentChannel;//支付渠道
@@ -100,6 +100,26 @@ public class OrderVO {
     private String areaDesc;
 
     private String detailAddress;
+
+    private String deliveryName;
+
+    private String deliveryCode;
+
+    public String getDeliveryName() {
+        return deliveryName;
+    }
+
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName;
+    }
+
+    public String getDeliveryCode() {
+        return deliveryCode;
+    }
+
+    public void setDeliveryCode(String deliveryCode) {
+        this.deliveryCode = deliveryCode;
+    }
 
     public Integer getId() {
         return id;

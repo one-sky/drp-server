@@ -185,6 +185,48 @@ public class ResourceAction {
 
     }
 
+    /**
+     * 获取促销详情
+     * @return
+     */
+    @RequestMapping(value = "getPromotionById",method= RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<PProductPromotionEntity> getPromotionById(@RequestBody String jsonString){
+        BaseModel<PProductPromotionEntity> model = new BaseModel<PProductPromotionEntity>();
+        JSONObject object = JSON.parseObject(jsonString);
+        Integer id = object.getInteger("id");
+        try {
+            PProductPromotionEntity data =  resourceService.getPromotionById(id);
+            model.setData(data);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
+    /**
+     * 获取促销sku商品详情
+     * @return
+     */
+    @RequestMapping(value = "getProductPromotion",method= RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<PPromoteProductEntity>> getProductPromotion(@RequestBody String jsonString){
+        BaseModel<List<PPromoteProductEntity>> model = new BaseModel<List<PPromoteProductEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        Integer promotionId = object.getInteger("promotionId");
+        Integer skuId = object.getInteger("skuId");
+        try {
+            List<PPromoteProductEntity> data= resourceService.getProductPromotion(promotionId, skuId);
+            model.setData(data);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
 
     /**
      * 获取可选渠道列表

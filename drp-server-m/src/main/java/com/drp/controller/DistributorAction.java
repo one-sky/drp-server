@@ -176,7 +176,9 @@ public class DistributorAction {
         try {
             Map<String,Object> map =  brandService.getBrandListByAgentBrand(distributorId, brandName, status, pageNum, pageSize);
             List<RBrandEntity> data= (List<RBrandEntity>) map.get("dataList");
+            PageModel pageInfo = (PageModel) map.get("pageInfo");
             model.setData(data);
+            model.setPage(pageInfo);
         } catch (Exception e) {
             model.setMessage(e.getMessage());
             model.setStatus(Constants.FAIL_BUSINESS_ERROR);
@@ -238,6 +240,28 @@ public class DistributorAction {
         Integer distributorId = object.getInteger("distributorId");
         try {
             List<DChannelEntity> data = channelService.getChannelList(distributorId);
+            model.setData(data);
+        } catch (Exception e) {
+            model.setMessage(e.getMessage());
+            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
+        }
+        return model;
+
+    }
+
+    /**
+     *  获取已代理渠道的代理的品牌
+     * @return
+     */
+    @RequestMapping(value = "getAgentBrandByChannel",method= RequestMethod.POST)
+    @ResponseBody
+    public BaseModel<List<RBrandEntity>> getAgentBrandByChannel(@RequestBody String jsonString){
+        BaseModel<List<RBrandEntity>> model = new BaseModel<List<RBrandEntity>>();
+        JSONObject object = JSON.parseObject(jsonString);
+        Integer distributorId = object.getInteger("distributorId");
+        Integer channelId = object.getInteger("channelId");
+        try {
+            List<RBrandEntity> data = brandService.getAgentBrandByChannel(distributorId, channelId);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

@@ -15,7 +15,7 @@ public class AttrVO {
     private Timestamp createTime;
     private int lastUpdateBy;
     private Timestamp lastUpdateTime;
-    private String status;
+    private int status;
     private List<PAttrValueEntity> attrValueEntityList;
 
     public int getId() {
@@ -90,11 +90,11 @@ public class AttrVO {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

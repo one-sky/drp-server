@@ -39,6 +39,7 @@
                 <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
                 <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/drp</prop>
                 <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>     <!--在控制台显示执行的数据哭操作语句（格式）-->
+                <prop key="c3p0.testConnectionOnCheckout">true</prop>
             </props>
         </property>
         <property name="mappingLocations">
@@ -150,6 +151,9 @@
                 <value>classpath:com/drp/entity/PAttrValueEntity.hbm.xml</value>
                 <value>classpath:com/drp/entity/PCategoryAttrEntity.hbm.xml</value>
                 <value>classpath:com/drp/entity/PAttrValueEntity.hbm.xml</value>
+                <value>classpath:com/drp/entity/OOrderEntity.hbm.xml</value>
+                <value>classpath:com/drp/entity/OOrderEntity.hbm.xml</value>
+                <value>classpath:com/drp/entity/PProductCategoryEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

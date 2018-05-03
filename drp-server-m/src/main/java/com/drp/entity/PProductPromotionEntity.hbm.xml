@@ -19,7 +19,7 @@
             <column name="sales_eff_end" sql-type="timestamp"/>
         </property>
         <property name="coverImg">
-            <column name="cover_img" sql-type="varchar(1000)" length="1000" not-null="true"/>
+            <column name="cover_img" sql-type="varchar(1000)" length="1000"/>
         </property>
         <property name="status">
             <column name="status" sql-type="char(1)" length="1"/>
@@ -28,7 +28,7 @@
             <column name="discription" sql-type="varchar(256)" length="256"/>
         </property>
         <property name="content">
-            <column name="content" sql-type="varchar(10000)" length="10000" not-null="true"/>
+            <column name="content" sql-type="varchar(10000)" length="10000" />
         </property>
         <property name="createBy">
             <column name="create_by" sql-type="int(11)"/>

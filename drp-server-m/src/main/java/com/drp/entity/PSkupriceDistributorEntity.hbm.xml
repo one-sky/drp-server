@@ -16,13 +16,13 @@
             <column name="sku_id" sql-type="int(11)"/>
         </property>
         <property name="attributes">
-            <column name="attributes" sql-type="varchar(255)" not-null="true"/>
+            <column name="attributes" sql-type="varchar(255)" />
         </property>
         <property name="price">
             <column name="price" sql-type="decimal(12,2)" precision="12" scale="2"/>
         </property>
         <property name="createBy">
-            <column name="create_by" sql-type="int(11)" not-null="true"/>
+            <column name="create_by" sql-type="int(11)"/>
         </property>
         <property name="createTime">
             <column name="create_time" sql-type="timestamp"/>

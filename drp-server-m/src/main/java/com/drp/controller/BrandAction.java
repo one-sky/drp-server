@@ -72,8 +72,9 @@ public class BrandAction {
         BaseModel<List<RBrandEntity>> model = new BaseModel<List<RBrandEntity>>();
         JSONObject object = JSON.parseObject(jsonString);
         Integer categoryId = object.getInteger("categoryId");
+        Integer userType = object.getInteger("userType");
         try {
-            List<RBrandEntity> data =  brandService.getBrandListByCategoryId(categoryId);
+            List<RBrandEntity> data =  brandService.getBrandListByCategoryId(categoryId, userType);
             model.setData(data);
         } catch (Exception e) {
             model.setMessage(e.getMessage());

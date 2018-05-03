@@ -101,7 +101,6 @@ public class OrderAction {
 
     /**
      * 获取订单列表
-     * distributorId 必须有
      *
      * @return
      */

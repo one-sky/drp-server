@@ -11,7 +11,7 @@ public interface BrandRepository {
     public List<RBrandEntity> getBrandListByAgentBrand(Integer distributorId, String brandName,
                                                        String status, Integer pageSize, Integer startIndex);
 
-    public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId);
+    public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId, Integer userType);
 
     public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId);
 
@@ -27,4 +27,6 @@ public interface BrandRepository {
     public Integer updateAgentBrand(DAgentBrandEntity entity);
 
     public String isAgentBrand(Integer distributorId, Integer skuId);
+
+    public List<RBrandEntity> getAgentBrandByChannel(Integer distributorId, Integer channelId);
 }

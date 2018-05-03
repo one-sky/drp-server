@@ -25,11 +25,18 @@ public class ChannelRepositoryImpl implements ChannelRepository {
         return this.sessionFactory.openSession();
     }
     public List<RChannelResourceEntity> getChannelOptionList(Integer userType) {
-        Criteria c = getCurrentSession().createCriteria(RChannelResourceEntity.class);
-        if(userType == 1) {
-            c.add(Restrictions.eq("status", 1));
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(RChannelResourceEntity.class);
+            if (userType == 1) {
+                c.add(Restrictions.eq("status", 1));
+            }
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
         }
-        return c.list();
     }
 
     public RChannelResourceEntity selectChannelOptionByKey(Integer id) {
@@ -48,9 +55,16 @@ public class ChannelRepositoryImpl implements ChannelRepository {
     }
 
     public List<DChannelEntity> getChannelList(Integer distributorId) {
-        Criteria c = getCurrentSession().createCriteria(DChannelEntity.class);
-        c.add(Restrictions.eq("distributorId", distributorId));
-        return c.list();
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(DChannelEntity.class);
+            c.add(Restrictions.eq("distributorId", distributorId));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public DChannelEntity getChannelById(Integer id) {

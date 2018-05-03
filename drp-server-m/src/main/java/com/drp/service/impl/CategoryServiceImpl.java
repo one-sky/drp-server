@@ -55,11 +55,14 @@ public class CategoryServiceImpl implements CategoryService {
                 for(PAttrValueEntity entity:attrValueEntities) {
                     if(entity.getAttrId() == id) {
                         attrs.add(entity);
-                    } else {
-                        break;
                     }
                 }
                 vo.setAttrValueEntityList(attrs);
+                if(attrs.isEmpty()) {
+                    vo.setStatus(2);
+                } else {
+                    vo.setStatus(1);
+                }
 
             }
         }
@@ -83,31 +86,5 @@ public class CategoryServiceImpl implements CategoryService {
         map.put("dataList",dataList);
         map.put("pageInfo",pageInfo);
         return map;
-    }
-
-    public Integer saveCategory(PCategoryEntity entity, Integer userId) {
-        Timestamp currentTime = new Timestamp(new Date().getTime());
-        Integer id= entity.getId();
-        //新建时
-        if(null == id || id ==0){
-            PCategoryEntity parent=categoryRepository.getCategoryById(entity.getParentId());
-            if(parent!=null) {
-                entity.setStatus(0);//新建时设为无效状态
-                entity.setIsLeaf(1);
-                entity.setCreateBy(userId);
-                entity.setLastUpdateBy(userId);
-                entity.setLevel(String.valueOf(Integer.valueOf(parent.getLevel())+1));
-                return categoryRepository.insertCategory(entity);
-            }
-
-        }else{
-            PCategoryEntity dbCategory=categoryRepository.getCategoryById(id);
-            BeanUtils.copyProperties(entity,dbCategory);
-            dbCategory.setLastUpdateBy(userId);
-            dbCategory.setLastUpdateTime(currentTime);
-            return categoryRepository.updateCategory(entity);
-
-        }
-        return 0;
     }
 }

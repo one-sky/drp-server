@@ -12,7 +12,7 @@ public interface BrandService {
     public Map<String,Object> getBrandListByAgentBrand(Integer distributorId,
                                                        String brandName, String status, Integer pageNum, Integer pageSize);
 
-    public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId);
+    public List<RBrandEntity> getBrandListByCategoryId(Integer categoryId, Integer userType);
 
     public DAgentBrandEntity getAgentBrand(Integer distributorId, Integer brandId);
 
@@ -23,4 +23,6 @@ public interface BrandService {
     public List<RBrandAttachmentEntity> getBrandAttachment(Integer brandId);
 
     public Integer insertAgentBrand(DAgentBrandEntity entity);
+
+    public List<RBrandEntity> getAgentBrandByChannel(Integer distributorId, Integer channelId);
 }

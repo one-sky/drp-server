@@ -1,5 +1,6 @@
 package com.drp.repository.impl;
 
+import com.drp.Util.Delete;
 import com.drp.Util.Insert;
 import com.drp.Util.Update;
 import com.drp.entity.PAttrValueEntity;
@@ -28,71 +29,159 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     public List<PCategoryEntity> getCategoryList(Integer userType) {
-        Criteria c = getCurrentSession().createCriteria(PCategoryEntity.class);
-        if(userType == 1) {
-            c.add(Restrictions.eq("status", 1));
-        }
-        c.addOrder( Order.asc("level")).addOrder( Order.asc("parentId"))
-                .addOrder( Order.asc("sortBy")).addOrder( Order.desc("lastUpdateTime"));
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PCategoryEntity.class);
+            if (userType == 1) {
+                c.add(Restrictions.eq("status", 1));
+            }
+            c.addOrder(Order.asc("level")).addOrder(Order.asc("parentId"))
+                    .addOrder(Order.asc("sortBy")).addOrder(Order.desc("lastUpdateTime"));
 
-        return c.list();
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        }finally {
+            session.close();
+        }
 
     }
 
     public PCategoryEntity getCategoryById(Integer id) {
-        Criteria c = getCurrentSession().createCriteria(PCategoryEntity.class);
-        c.add(Restrictions.eq("id", id));
-        c.add(Restrictions.eq("status", 1));
-        if(c.list().isEmpty()){
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PCategoryEntity.class);
+            c.add(Restrictions.eq("id", id));
+            if (c.list().isEmpty()) {
+                return null;
+            }
+            return (PCategoryEntity) c.list().get(0);
+        } catch (Exception e) {
+            System.exit(1);
             return null;
+        } finally {
+            session.close();
         }
-        return (PCategoryEntity)c.list().get(0);
     }
 
     public List<PCategoryAttrEntity> getAttributeList(Integer userType, List<Integer> categoryIds) {
-        Criteria c = getCurrentSession().createCriteria(PCategoryAttrEntity.class);
-        if(userType == 1) {
-            c.add(Restrictions.eq("status", "Y"));
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c =session.createCriteria(PCategoryAttrEntity.class);
+            if (null != categoryIds && !categoryIds.isEmpty()) {
+                c.add(Restrictions.in("categoryId", categoryIds));
+            }
+            c.addOrder(Order.asc("categoryId"));
+            c.addOrder(Order.desc("lastUpdateTime"));
+            return c.list();
+        }catch (Exception e) {
+            System.exit(1);
+            return null;
+        } finally {
+            session.close();
         }
-        if(!categoryIds.isEmpty()) {
-            c.add(Restrictions.in("categoryId", categoryIds));
+    }
+
+    public PCategoryAttrEntity getAttrById(Integer id) {
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PCategoryAttrEntity.class);
+            c.add(Restrictions.eq("id", id));
+            if (c.list().isEmpty()) {
+                return null;
+            }
+            return (PCategoryAttrEntity) c.list().get(0);
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
         }
-        c.addOrder( Order.asc("categoryId"));
-        c.addOrder( Order.desc("lastUpdateTime"));
-        return c.list();
+    }
+
+    public PAttrValueEntity getAttrValueById(Integer id) {
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PAttrValueEntity.class);
+            c.add(Restrictions.eq("id", id));
+            if (c.list().isEmpty()) {
+                return null;
+            }
+            return (PAttrValueEntity) c.list().get(0);
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<PAttrValueEntity> getAttrValueByIdList(List<Integer> ids) {
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PAttrValueEntity.class);
+            c.add(Restrictions.in("id", ids));
+            if (c.list().isEmpty()) {
+                return null;
+            }
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public List<PAttrValueEntity> getAttrValueList(Integer userType, List<Integer> attrIds) {
-        Criteria c = getCurrentSession().createCriteria(PAttrValueEntity.class);
-        if(userType == 1) {
-            c.add(Restrictions.eq("status", "Y"));
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PAttrValueEntity.class);
+            if (userType == 1) {
+                c.add(Restrictions.eq("status", 1));
+            }
+            if (!attrIds.isEmpty()) {
+                c.add(Restrictions.in("attrId", attrIds));
+            }
+            c.addOrder(Order.asc("attrId"));
+            c.addOrder(Order.asc("sortBy"));
+            c.addOrder(Order.desc("lastUpdateTime"));
+            c.addOrder(Order.asc("id"));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
         }
-        if(!attrIds.isEmpty()) {
-            c.add(Restrictions.in("attrId", attrIds));
-        }
-        c.addOrder( Order.asc("attrId"));
-        c.addOrder( Order.asc("sortBy"));
-        c.addOrder( Order.desc("lastUpdateTime"));
-        c.addOrder( Order.asc("id"));
-        return c.list();
     }
 
     public List<PCategoryEntity> getCategoryByParentId(Integer parentId) {
-        Criteria c = getCurrentSession().createCriteria(PCategoryEntity.class);
-        c.add(Restrictions.eq("parentId", parentId));
-        c.add(Restrictions.eq("status", 1));
-        return c.list();
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PCategoryEntity.class);
+            c.add(Restrictions.eq("parentId", parentId));
+            c.add(Restrictions.eq("status", 1));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public List<PCategoryEntity> getCategoryByCategoryName(String categoryName, Integer pageSize, Integer startIndex) {
-        Criteria c = getCurrentSession().createCriteria(PCategoryEntity.class);
-        c.setFirstResult(startIndex);
-        c.setMaxResults(pageSize);
-        c.add(Restrictions.eq("categoryName", categoryName));
-        c.add(Restrictions.eq("status", 1))
-                .addOrder( Order.asc("sortBy"))
-                .addOrder( Order.desc("lastUpdateTime"));
-        return c.list();
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PCategoryEntity.class);
+            c.setFirstResult(startIndex);
+            c.setMaxResults(pageSize);
+            c.add(Restrictions.eq("categoryName", categoryName));
+            c.add(Restrictions.eq("status", 1))
+                    .addOrder(Order.asc("sortBy"))
+                    .addOrder(Order.desc("lastUpdateTime"));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public Integer insertCategory(PCategoryEntity entity) {
@@ -103,6 +192,57 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     public Integer updateCategory(PCategoryEntity entity) {
         Session session = this.getCurrentSession();
         return new Update<PCategoryEntity>(session, entity).getData();
+    }
+
+    public Integer deleteCategory(PCategoryEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Delete(session, entity).getData();
+    }
+
+    public Integer insertAttr(PCategoryAttrEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Insert<PCategoryAttrEntity>(session, entity).getData();
+    }
+
+    public Integer updateAttr(PCategoryAttrEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Update<PCategoryAttrEntity>(session, entity).getData();
+    }
+
+    public Integer deleteAttr(PCategoryAttrEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Delete(session, entity).getData();
+    }
+
+    public Integer insertAttrValue(PAttrValueEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Insert<PAttrValueEntity>(session, entity).getData();
+    }
+
+    public Integer updateAttrValue(PAttrValueEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Update<PAttrValueEntity>(session, entity).getData();
+    }
+
+    public Integer updateAttrValueList(List<PAttrValueEntity> entity) {
+        Session session = this.getCurrentSession();
+        try {
+            session.beginTransaction();
+            for (PAttrValueEntity attr : entity) {
+                session.update(attr);
+            }
+            session.getTransaction().commit();
+            return 1;
+        }catch (Exception e) {
+            return -1;
+        } finally {
+            session.close();
+        }
+    }
+
+    public Integer deleteAttrValue(PAttrValueEntity entity) {
+        Session session = this.getCurrentSession();
+        return new Delete(session, entity).getData();
     }
 
 

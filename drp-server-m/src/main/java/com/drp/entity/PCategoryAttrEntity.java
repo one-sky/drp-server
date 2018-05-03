@@ -10,7 +10,7 @@ public class PCategoryAttrEntity {
     private Timestamp createTime;
     private int lastUpdateBy;
     private Timestamp lastUpdateTime;
-    private String status;
+    private int status;
 
     public int getId() {
         return id;
@@ -68,11 +68,11 @@ public class PCategoryAttrEntity {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -91,7 +91,6 @@ public class PCategoryAttrEntity {
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
         if (lastUpdateTime != null ? !lastUpdateTime.equals(that.lastUpdateTime) : that.lastUpdateTime != null)
             return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
 
         return true;
     }
@@ -105,7 +104,6 @@ public class PCategoryAttrEntity {
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + lastUpdateBy;
         result = 31 * result + (lastUpdateTime != null ? lastUpdateTime.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 }

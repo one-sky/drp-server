@@ -37,6 +37,8 @@ public class OOrderEntity {
     private String area;
     private String detailAddress;
     private Timestamp expireTime;
+    private String deliveryName;
+    private String deliveryCode;
 
     public int getId() {
         return id;
@@ -387,5 +389,21 @@ public class OOrderEntity {
         result = 31 * result + (detailAddress != null ? detailAddress.hashCode() : 0);
         result = 31 * result + (expireTime != null ? expireTime.hashCode() : 0);
         return result;
+    }
+
+    public String getDeliveryName() {
+        return deliveryName;
+    }
+
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName;
+    }
+
+    public String getDeliveryCode() {
+        return deliveryCode;
+    }
+
+    public void setDeliveryCode(String deliveryCode) {
+        this.deliveryCode = deliveryCode;
     }
 }

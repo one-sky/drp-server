@@ -85,7 +85,7 @@
             <column name="last_update_time" sql-type="timestamp(6)"/>
         </property>
         <property name="saleChannel">
-            <column name="sale_channel" sql-type="varchar(12)" length="12"/>
+            <column name="sale_channel" sql-type="varchar(125)" length="125"/>
         </property>
         <property name="cooperateMode">
             <column name="cooperate_mode" sql-type="char(1)" length="1" />

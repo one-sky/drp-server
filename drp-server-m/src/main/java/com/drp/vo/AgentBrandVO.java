@@ -11,7 +11,7 @@ public class AgentBrandVO {
     private int categoryId;
     private String categoryName;
     private int channelId;
-    private int channelName;
+    private String channelName;
     private String reason;
     private String status;
     private String brandCertificate;
@@ -84,11 +84,11 @@ public class AgentBrandVO {
         this.channelId = channelId;
     }
 
-    public int getChannelName() {
+    public String getChannelName() {
         return channelName;
     }
 
-    public void setChannelName(int channelName) {
+    public void setChannelName(String channelName) {
         this.channelName = channelName;
     }
 

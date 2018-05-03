@@ -1,8 +1,6 @@
 package com.drp.service;
 
-import com.drp.entity.RArticleEntity;
-import com.drp.entity.RBannerEntity;
-import com.drp.entity.RRegionEntity;
+import com.drp.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +19,10 @@ public interface ResourceService {
     public Map<String,Object> getNoticeList( Integer userType, Boolean isIndex, Integer pageNum, Integer pageSize);
 
     public Map<String,Object> getPromotionList( Integer userType, Boolean isIndex, Integer pageNum, Integer pageSize);
+
+    public PProductPromotionEntity getPromotionById(Integer id);
+
+    public List<PPromoteProductEntity> getProductPromotion(Integer promotionId, Integer skuId);
 
     public List<RRegionEntity> getProvinceList();
 

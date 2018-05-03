@@ -136,27 +136,5 @@ public class CategoryAction {
     }
 
 
-    /**
-     * 保存类目
-     * @return
-     */
-    @RequestMapping(value="saveCategory", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseModel<Integer> saveCategory(@RequestBody String jsonString){
-        BaseModel<Integer> model=new BaseModel<Integer>();
-        JSONObject object = JSON.parseObject(jsonString);
-        Integer userId = object.getInteger("userId");
-        PCategoryEntity entity = JSON.parseObject(jsonString,PCategoryEntity.class);
-        try {
-            Integer result=categoryService.saveCategory(entity, userId);
-            model.setData(result);
-        } catch (Exception e) {
-            model.setMessage(e.getMessage());
-            model.setStatus(Constants.FAIL_BUSINESS_ERROR);
-        }
-        return model;
-    }
-
-
 }
 

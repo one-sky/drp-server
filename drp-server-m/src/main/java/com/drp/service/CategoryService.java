@@ -18,6 +18,6 @@ public interface CategoryService {
 
     public Map<String,Object> getCategoryByCategoryName(String categoryName, Integer pageNum, Integer pageSize);
 
-    public Integer saveCategory(PCategoryEntity entity, Integer userId);
+
 
 }

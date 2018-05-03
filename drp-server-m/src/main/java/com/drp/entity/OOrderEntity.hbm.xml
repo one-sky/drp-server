@@ -16,7 +16,7 @@
             <column name="distributor_id" sql-type="int(11)"/>
         </property>
         <property name="accountId">
-            <column name="account_id" sql-type="bigint(20)" />
+            <column name="account_id" sql-type="bigint(20)"/>
         </property>
         <property name="type">
             <column name="type" sql-type="int(11)"/>
@@ -34,16 +34,16 @@
             <column name="shipping_cost" sql-type="decimal(12,4)" precision="12" scale="4"/>
         </property>
         <property name="trancationId">
-            <column name="trancation_id" sql-type="varchar(100)" length="100"/>
+            <column name="trancation_id" sql-type="varchar(100)" length="100" />
         </property>
         <property name="paymentStatus">
-            <column name="payment_status" sql-type="tinyint(4)" not-null="true"/>
+            <column name="payment_status" sql-type="tinyint(4)" />
         </property>
         <property name="paymentTime">
-            <column name="payment_time" sql-type="timestamp"/>
+            <column name="payment_time" sql-type="timestamp" />
         </property>
         <property name="paymentChannel">
-            <column name="payment_channel" sql-type="varchar(45)" length="45"/>
+            <column name="payment_channel" sql-type="varchar(45)" length="45" />
         </property>
         <property name="orderItemQuantity">
             <column name="order_item_quantity" sql-type="int(11)"/>
@@ -58,19 +58,19 @@
             <column name="cancel_type" sql-type="tinyint(4)" />
         </property>
         <property name="cancelReason">
-            <column name="cancel_reason" sql-type="varchar(256)" length="256"/>
+            <column name="cancel_reason" sql-type="varchar(256)" length="256" />
         </property>
         <property name="cancelTime">
             <column name="cancel_time" sql-type="timestamp" />
         </property>
         <property name="buyerMessage">
-            <column name="buyer_message" sql-type="varchar(1000)" length="1000"/>
+            <column name="buyer_message" sql-type="varchar(1000)" length="1000" />
         </property>
         <property name="deliveryTime">
-            <column name="delivery_time" sql-type="timestamp"/>
+            <column name="delivery_time" sql-type="timestamp" />
         </property>
         <property name="finishTime">
-            <column name="finish_time" sql-type="timestamp"/>
+            <column name="finish_time" sql-type="timestamp" />
         </property>
         <property name="createBy">
             <column name="create_by" sql-type="int(11)"/>
@@ -103,7 +103,13 @@
             <column name="detail_address" sql-type="varchar(256)" length="256"/>
         </property>
         <property name="expireTime">
-            <column name="expire_time" sql-type="timestamp"/>
+            <column name="expire_time" sql-type="timestamp" />
+        </property>
+        <property name="deliveryName">
+            <column name="delivery_name" sql-type="varchar(45)" length="45" />
+        </property>
+        <property name="deliveryCode">
+            <column name="delivery_code" sql-type="varchar(45)" length="45" />
         </property>
     </class>
 </hibernate-mapping>

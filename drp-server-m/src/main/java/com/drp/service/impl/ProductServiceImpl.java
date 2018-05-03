@@ -70,9 +70,9 @@ public class ProductServiceImpl implements ProductService {
         // 根据分销商等级获取sku价格列表、特定分销商特殊sku价格列表
         List<SkuPriceDetailVO> priceList=null;
         List<SkuPriceDetailVO> specialPriceList=null;
-        priceList = productRepository.getPriceList(distributorId, spuId);
-        if(null!=distributorId) {
-            specialPriceList = productRepository.getPriceListByDistributorId(distributorId, spuId);
+        priceList = productRepository.getPriceList(distributorId, spuId, null);
+        if(null!=distributorId && 0 != distributorId) {
+            specialPriceList = productRepository.getPriceListByDistributorId(distributorId, spuId, null);
         }
 
         List<SkuPriceDetailVO> resultPriceList = new ArrayList<SkuPriceDetailVO>();
@@ -169,7 +169,7 @@ public class ProductServiceImpl implements ProductService {
             if(spuIds.isEmpty()){
                 return -1;
             }
-            entity.setSortBy(result.get(result.size()-1).getSortBy()+1);
+            entity.setSortBy(1);
             entity.setCreateBy(999);
             entity.setCreateTime(tmp);
             entity.setLastUpdateBy(999);
@@ -189,20 +189,24 @@ public class ProductServiceImpl implements ProductService {
             priceDetailVO = new ArrayList<SkuPriceDetailVO>();
 
             // 促销sku价格列表
-            List<SkuPriceDetailVO> promoteList =productRepository.getPriceListPromotion(null, vo.getSpuId());
+            List<SkuPriceDetailVO> promoteList =productRepository.getPriceListPromotion(null, vo.getSkuId());
 
             // 根据分销商等级获取sku价格列表、特定分销商特殊sku价格列表
             List<SkuPriceDetailVO> priceList=null;
             List<SkuPriceDetailVO> specialPriceList=null;
             if(null!=distributorId) {
-                priceList = productRepository.getPriceList( distributorId, vo.getSpuId());
-                specialPriceList = productRepository.getPriceListByDistributorId(distributorId, vo.getSpuId());
+                priceList = productRepository.getPriceList(distributorId, null, vo.getSkuId());
+                specialPriceList = productRepository.getPriceListByDistributorId(distributorId, null, vo.getSkuId());
             }
-            for(SkuPriceDetailVO price:specialPriceList) {
-                priceDetailVO.add(price);
+            if(specialPriceList != null && !specialPriceList.isEmpty()) {
+                for(SkuPriceDetailVO price:specialPriceList) {
+                    priceDetailVO.add(price);
+                }
             }
-            for(SkuPriceDetailVO price:promoteList) {
-                priceDetailVO.add(price);
+            if(promoteList != null && !promoteList.isEmpty()) {
+                for (SkuPriceDetailVO price : promoteList) {
+                    priceDetailVO.add(price);
+                }
             }
             for(SkuPriceDetailVO price:priceList) {
                 priceDetailVO.add(price);
@@ -248,7 +252,7 @@ public class ProductServiceImpl implements ProductService {
                     cart.setCreateTime(currentTime);
                     cart.setQuantity(quantity);
                     String status = brandRepository.isAgentBrand(distributorId, cart.getSkuId());
-                    cart.setType(status == "Y" ? 1 :2);
+                    cart.setType(status.equals("Y") ? 1 :2);
                     productRepository.insertShoppingCart(cart);
                     break;
                 }
@@ -260,7 +264,7 @@ public class ProductServiceImpl implements ProductService {
 
                         if (dbCart.getSkuId().equals(vo.getSkuId()) && dbCart.getType().equals(vo.getType())) {
                             if (dbCart.getQuantity() <= quantity) {
-                                cart.setId(dbCart.getQuantity());
+                                cart.setId(dbCart.getId());
                                 productRepository.deleteShoppingCart(cart);
                                 break;
                             } else {

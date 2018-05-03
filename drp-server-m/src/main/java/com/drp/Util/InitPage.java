@@ -15,7 +15,7 @@ public class InitPage {
         if(pageNum ==null || "".equals(pageNum)) {
             this.pageNum = 1;
             this.pageSize = 100000;
-            this.startIndex = 1;
+            this.startIndex = 0;
         }else { // 传入了pageNum，不设pageSize，默认10
             if(pageSize ==null || "".equals(pageSize)){
                 this.pageSize = 10;

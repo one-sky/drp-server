@@ -16,7 +16,7 @@
             <column name="category_name" sql-type="varchar(128)" length="128"/>
         </property>
         <property name="categoryEgName">
-            <column name="category_eg_name" sql-type="varchar(128)" length="128" not-null="true"/>
+            <column name="category_eg_name" sql-type="varchar(128)" length="128"/>
         </property>
         <property name="sortBy">
             <column name="sort_by" sql-type="int(11)"/>
@@ -28,10 +28,10 @@
             <column name="status" sql-type="int(1)"/>
         </property>
         <property name="level">
-            <column name="level" sql-type="char(1)" length="1" not-null="true"/>
+            <column name="level" sql-type="char(1)" length="1"/>
         </property>
         <property name="categoryPic">
-            <column name="category_pic" sql-type="varchar(1000)" length="1000" not-null="true"/>
+            <column name="category_pic" sql-type="varchar(1000)" length="1000"/>
         </property>
         <property name="createBy">
             <column name="create_by" sql-type="int(11)"/>
@@ -46,10 +46,10 @@
             <column name="last_update_time" sql-type="timestamp"/>
         </property>
         <property name="categoryPath">
-            <column name="category_path" sql-type="varchar(100)" length="100" not-null="true"/>
+            <column name="category_path" sql-type="varchar(100)" length="100"/>
         </property>
         <property name="categoryRoot">
-            <column name="category_root" sql-type="varchar(256)" length="256" not-null="true"/>
+            <column name="category_root" sql-type="varchar(256)" length="256" />
         </property>
     </class>
 </hibernate-mapping>

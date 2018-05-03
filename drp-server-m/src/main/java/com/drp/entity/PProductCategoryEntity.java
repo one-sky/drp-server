@@ -15,6 +15,7 @@ public class PProductCategoryEntity {
     private String thumbnailImage;
     private String online;
     private String spuAttr;
+    private String size;
 
     public int getId() {
         return id;
@@ -150,5 +151,13 @@ public class PProductCategoryEntity {
 
     public void setSpuAttr(String spuAttr) {
         this.spuAttr = spuAttr;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

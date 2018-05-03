@@ -27,13 +27,21 @@ public class ResourceRepositoryImpl implements ResourceRepository {
         return this.sessionFactory.openSession();
     }
     public List<RBannerEntity> getBannerList(Integer status, Integer pageSize, Integer startIndex) {
-        Criteria c = getCurrentSession().createCriteria(RBannerEntity.class);
-        c.setFirstResult(startIndex);
-        c.setMaxResults(pageSize);
-        c.add(Restrictions.eq("status", status))
-                .addOrder( Order.asc("sortBy"))
-                .addOrder( Order.desc("lastUpdateTime"));
-        return c.list();
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(RBannerEntity.class);
+            c.setFirstResult(startIndex);
+            c.setMaxResults(pageSize);
+            c.add(Restrictions.eq("status", status))
+                    .addOrder(Order.asc("sortBy"))
+                    .addOrder(Order.desc("lastUpdateTime"));
+            return c.list();
+        }catch (Exception e) {
+            System.exit(1);
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public RBannerEntity selectBannerByKey(Integer id) {
@@ -53,14 +61,22 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 
     public List<RArticleEntity> getArticleList(Integer displayArea, Integer status,
                                                 Integer pageSize, Integer startIndex) {
-        Criteria c = getCurrentSession().createCriteria(RArticleEntity.class);
-        c.setFirstResult(startIndex);
-        c.setMaxResults(pageSize);
-        c.add(Restrictions.eq("displayArea", displayArea));
-        c.add(Restrictions.eq("status", status))
-                .addOrder( Order.asc("sortBy"))
-                .addOrder( Order.desc("lastUpdateTime"));
-        return c.list();
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(RArticleEntity.class);
+            c.setFirstResult(startIndex);
+            c.setMaxResults(pageSize);
+            c.add(Restrictions.eq("displayArea", displayArea));
+            c.add(Restrictions.eq("status", status))
+                    .addOrder( Order.asc("sortBy"))
+                    .addOrder( Order.desc("lastUpdateTime"));
+            return c.list();
+        }catch (Exception e) {
+            System.exit(1);
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public RArticleEntity getArticleDetailById(Integer id) {
@@ -84,73 +100,199 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     }
 
     public List<RArticleEntity> getNoticeList(Integer userType, Integer pageSize, Integer startIndex) {
-        Criteria c = getCurrentSession().createCriteria(RNoticeEntity.class);
-        c.setFirstResult(startIndex);
-        c.setMaxResults(pageSize);
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(RNoticeEntity.class);
+            c.setFirstResult(startIndex);
+            c.setMaxResults(pageSize);
 
-        if(userType != -1) {
-            int receiverType;
-            // 分销商未登录
-            if(userType == 0) {
-                receiverType = 1;
-            }else { // 已登陆分销商
-                receiverType = 2;
-                Timestamp s = new Timestamp(new Date().getTime());
-                c.add(Restrictions.le("effectDate", s));
-                c.add(Restrictions.ge("endDate", s));
+            if(userType != -1) {
+                int receiverType;
+                // 分销商未登录
+                if(userType == 0) {
+                    receiverType = 1;
+                }else { // 已登陆分销商
+                    receiverType = 2;
+                    Timestamp s = new Timestamp(new Date().getTime());
+                    c.add(Restrictions.le("effectDate", s));
+                    c.add(Restrictions.ge("endDate", s));
 
+                }
+                c.add(Restrictions.eq("receiverType", receiverType));
             }
-            c.add(Restrictions.eq("receiverType", receiverType));
+            c.addOrder( Order.desc("effectDate")).addOrder( Order.desc("lastUpdateTime"));
+            return c.list();
+        }catch (Exception e) {
+            System.exit(1);
+            return null;
+        } finally {
+            session.close();
         }
-        c.addOrder( Order.desc("effectDate")).addOrder( Order.desc("lastUpdateTime"));
-        return c.list();
     }
 
     public List<PProductPromotionEntity> getPromotionList(Integer userType, Integer pageSize, Integer startIndex) {
-        Criteria c = getCurrentSession().createCriteria(PProductPromotionEntity.class);
-        c.setFirstResult(startIndex);
-        c.setMaxResults(pageSize);
-        if(userType == 0) {
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PProductPromotionEntity.class);
+            c.setFirstResult(startIndex);
+            c.setMaxResults(pageSize);
+            if(userType == 0) {
 
-            Timestamp s = new Timestamp(new Date().getTime());
-            c.add(Restrictions.le("salesEffStart", s));
-            c.add(Restrictions.ge("salesEffEnd", s));
-            c.add(Restrictions.eq("status", "3"));
+                Timestamp s = new Timestamp(new Date().getTime());
+                c.add(Restrictions.le("salesEffStart", s));
+                c.add(Restrictions.ge("salesEffEnd", s));
+//                c.add(Restrictions.eq("status", "3"));
+            }
+            c.addOrder( Order.desc("salesEffEnd")).addOrder( Order.desc("lastUpdateTime"));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
         }
-        c.addOrder( Order.desc("salesEffEnd")).addOrder( Order.desc("lastUpdateTime"));
-        return c.list();
+    }
+
+    public PProductPromotionEntity getPromotionById(Integer id) {
+        Session session = this.getCurrentSession();
+        return new SelectByPrimarkKey<PProductPromotionEntity>("PProductPromotionEntity", session, id).getData();
+    }
+
+    public List<PPromoteProductEntity> getProductPromotion(Integer promotionId, Integer skuId) {
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PPromoteProductEntity.class);
+            c.add(Restrictions.eq("promotionId", promotionId));
+            c.add(Restrictions.eq("skuId", skuId));
+            c.addOrder( Order.asc("lowQuantity"));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public List<RRegionEntity> getProvinceList() {
         Session session = this.getCurrentSession();
-        Criteria c = session.createCriteria(RRegionEntity.class);
-        c.add(Restrictions.eq("level", 1))
-                .addOrder( Order.asc("regionCode"));
-        return c.list();
+        try {
+            Criteria c = session.createCriteria(RRegionEntity.class);
+            c.add(Restrictions.eq("level", 1))
+                    .addOrder( Order.asc("regionCode"));
+            return c.list();
+
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public List<RRegionEntity> getCityByProvince(String provinceId) {
         Session session = this.getCurrentSession();
-        Criteria c = session.createCriteria(RRegionEntity.class);
-        c.add(Restrictions.eq("level", 2))
-                .add(Restrictions.eq("parentCode", provinceId))
-                .addOrder( Order.asc("regionCode"));
-        return c.list();
+        try {
+            Criteria c = session.createCriteria(RRegionEntity.class);
+            c.add(Restrictions.eq("level", 2))
+                    .add(Restrictions.eq("parentCode", provinceId))
+                    .addOrder(Order.asc("regionCode"));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public List<RRegionEntity> getAreaByCity(String cityId) {
         Session session = this.getCurrentSession();
-        Criteria c = session.createCriteria(RRegionEntity.class);
-        c.add(Restrictions.eq("level", 3))
-                .add(Restrictions.eq("parentCode", cityId))
-                .addOrder( Order.asc("regionCode"));
-        return c.list();
+        try {
+            Criteria c = session.createCriteria(RRegionEntity.class);
+            c.add(Restrictions.eq("level", 3))
+                    .add(Restrictions.eq("parentCode", cityId))
+                    .addOrder( Order.asc("regionCode"));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public DPointsEntity getPointRule() {
         Session session = this.getCurrentSession();
-        Criteria c = session.createCriteria(DPointsEntity.class);
-        return (DPointsEntity)c.list().get(0);
+        try {
+            Criteria c = session.createCriteria(DPointsEntity.class);
+            return (DPointsEntity)c.list().get(0);
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    public Integer insertPromotion(PProductPromotionEntity entity) {
+        Session session = this.getCurrentSession();
+        Integer data = new Insert<PProductPromotionEntity>(session, entity).getData();
+        return data;
+    }
+
+    public Integer updatePromotion(PProductPromotionEntity entity) {
+        Session session = this.getCurrentSession();
+        Integer data = new Update<PProductPromotionEntity>(session, entity).getData();
+        return data;
+    }
+
+    public Integer deletePromotionPriceList(Integer promotionId, Integer skuId) {
+        Session session = this.getCurrentSession();
+        try {
+            String sqlString = "delete from p_promotion_product where promotion_id = " + promotionId + " and sku_id = " + skuId + "";
+            SQLQuery sqlQuery=session.createSQLQuery(sqlString);
+            return sqlQuery.executeUpdate();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<PPromoteProductEntity> selectPromotionPriceList(Integer promotionId, Integer skuId) {
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(PPromoteProductEntity.class);
+            c.add(Restrictions.eq("promotionId", promotionId))
+                    .add(Restrictions.eq("skuId", skuId));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    public Integer insertPromotionPriceList(Integer promotionId, Integer skuId, List<PPromoteProductEntity> entity) {
+
+        Session session = this.getCurrentSession();
+        Transaction tx = null;
+        try {
+            // 开始事务
+            tx = session.beginTransaction();
+            for(PPromoteProductEntity vo : entity) {
+                vo.setSkuId(skuId);
+                vo.setPromotionId(promotionId);
+                // 持久化
+                session.save(vo);
+            }
+            // 提交事务
+            tx.commit();
+        }catch (Exception e) {
+
+            if( tx != null) {
+                // 事务回滚
+                tx.rollback();
+            }
+        }finally {
+            session.close();
+        }
+        return 1;
     }
 
 

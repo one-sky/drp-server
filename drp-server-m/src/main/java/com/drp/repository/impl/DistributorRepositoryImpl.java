@@ -36,10 +36,17 @@ public class DistributorRepositoryImpl implements DistributorRepository {
     }
 
     public DDistributorEntity getDistributorByUserId(Integer id) {
-        Criteria c = getCurrentSession().createCriteria(DDistributorEntity.class);
-        c.add(Restrictions.eq("userId", id));
-        DDistributorEntity result = (DDistributorEntity)c.list().get(0);
-        return result;
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(DDistributorEntity.class);
+            c.add(Restrictions.eq("userId", id));
+            DDistributorEntity result = (DDistributorEntity) c.list().get(0);
+            return result;
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public Integer updateDistributor(DDistributorEntity entity) {
@@ -49,27 +56,39 @@ public class DistributorRepositoryImpl implements DistributorRepository {
 
     public DDistributorEntity getDistributorVip(Integer distributorId, Integer vipId) {
         Session session = this.getCurrentSession();
-        DDistributorEntity data;
-        // 获取原价
-        String sqlString="select vip_level as vipName, " +
-                "(select vip_level from d_vip where level_code = " + (vipId + 1) + ")  as nextVipName, " +
-                "cast(((select points from d_vip where level_code = " + (vipId + 1) + ") - (select points from d_distributor where id = " + distributorId + ")) as nchar(10)) " +
-                "as nextLevelPoints from d_vip where level_code = " + vipId;
-        SQLQuery sqlQuery=session.createSQLQuery(sqlString);
-        data = (DDistributorEntity) sqlQuery.setResultTransformer(Transformers.aliasToBean(DDistributorEntity.class)).list().get(0);
-        return data;
+        try {
+            DDistributorEntity data;
+            // 获取原价
+            String sqlString = "select vip_level as vipName, " +
+                    "(select vip_level from d_vip where level_code = " + (vipId + 1) + ")  as nextVipName, " +
+                    "cast(((select points from d_vip where level_code = " + (vipId + 1) + ") - (select points from d_distributor where id = " + distributorId + ")) as nchar(10)) " +
+                    "as nextLevelPoints from d_vip where level_code = " + vipId;
+            SQLQuery sqlQuery = session.createSQLQuery(sqlString);
+            data = (DDistributorEntity) sqlQuery.setResultTransformer(Transformers.aliasToBean(DDistributorEntity.class)).list().get(0);
+            return data;
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public List<DAddressEntity> getAddressList(Integer id) {
-        Criteria c = getCurrentSession().createCriteria(DAddressEntity.class);
-        c.add(Restrictions.eq("distributorId", id))
-                .addOrder( Order.desc("isDefault"))
-                .addOrder( Order.desc("lastUpdateTime"));
-        return c.list();
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(DAddressEntity.class);
+            c.add(Restrictions.eq("distributorId", id))
+                    .addOrder(Order.desc("isDefault"))
+                    .addOrder(Order.desc("lastUpdateTime"));
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
+        }
     }
 
     public DAddressEntity getAddress(Integer id) {
-
         Session session = this.getCurrentSession();
         return new SelectByPrimarkKey<DAddressEntity>("DAddressEntity", session, id).getData();
     }
@@ -102,25 +121,32 @@ public class DistributorRepositoryImpl implements DistributorRepository {
     }
 
     public List<DPointsHistoryEntity> getPointList(SearchVO entity) {
-        Criteria c = getCurrentSession().createCriteria(DPointsHistoryEntity.class);
-        c.add(Restrictions.eq("distributorId", entity.getDistributorId()));
+        Session session = this.getCurrentSession();
+        try {
+            Criteria c = session.createCriteria(DPointsHistoryEntity.class);
+            c.add(Restrictions.eq("distributorId", entity.getDistributorId()));
 
-        if(null != entity.getStartDate() && !"".equals(entity.getStartDate())){
-            c.add(Restrictions.ge("orderTime", entity.getStartDate()));
+            if (null != entity.getStartDate() && !"".equals(entity.getStartDate())) {
+                c.add(Restrictions.ge("orderTime", entity.getStartDate()));
 
+            }
+            if (null != entity.getEndDate() && !"".equals(entity.getEndDate())) {
+                c.add(Restrictions.le("orderTime", entity.getEndDate()));
+
+            }
+            if (null != entity.getOrderCode() && !"".equals(entity.getOrderCode())) {
+                c.add(Restrictions.ge("orderNumber", entity.getOrderCode()));
+
+            }
+            c.addOrder(Order.desc("lastUpdateTime"));
+            c.setFirstResult(entity.getStartIndex());
+            c.setMaxResults(entity.getPageSize());
+            return c.list();
+        }catch (Exception e) {
+            return null;
+        } finally {
+            session.close();
         }
-        if(null != entity.getEndDate() && !"".equals(entity.getEndDate())){
-            c.add(Restrictions.le("orderTime", entity.getEndDate()));
-
-        }
-        if(null != entity.getOrderCode() && !"".equals(entity.getOrderCode())){
-            c.add(Restrictions.ge("orderNumber", entity.getOrderCode()));
-
-        }
-        c.addOrder( Order.desc("lastUpdateTime"));
-        c.setFirstResult(entity.getStartIndex());
-        c.setMaxResults(entity.getPageSize());
-        return c.list();
     }
 
 }

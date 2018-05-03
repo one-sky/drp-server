@@ -1,5 +1,6 @@
 package com.drp.repository;
 
+import com.drp.entity.DAgentBrandEntity;
 import com.drp.entity.DDistributorEntity;
 import com.drp.entity.RBrandEntity;
 import com.drp.vo.AgentBrandVO;
@@ -23,6 +24,10 @@ public interface ManageRepository {
     public Integer deleteBrand(Integer id);
 
     public List<AgentBrandVO> getAgentBrandList(AgentBrandVO entity, Integer pageSize, Integer startIndex );
+
+    public DAgentBrandEntity getAgentBrandByKey(Integer id);
+
+    public Integer updateAgentStatus(DAgentBrandEntity entity);
 
 
 }

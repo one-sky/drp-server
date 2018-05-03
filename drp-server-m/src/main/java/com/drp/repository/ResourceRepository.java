@@ -29,6 +29,10 @@ public interface ResourceRepository {
 
     public List<PProductPromotionEntity> getPromotionList(Integer userType, Integer pageSize, Integer startIndex);
 
+    public PProductPromotionEntity getPromotionById(Integer id);
+
+    public List<PPromoteProductEntity> getProductPromotion(Integer promotionId, Integer skuId);
+
     public List<RRegionEntity> getProvinceList();
 
     public List<RRegionEntity> getCityByProvince(String provinceId);
@@ -36,6 +40,16 @@ public interface ResourceRepository {
     public List<RRegionEntity> getAreaByCity(String cityId);
 
     public DPointsEntity getPointRule();
+
+    public Integer insertPromotion(PProductPromotionEntity entity);
+
+    public Integer updatePromotion(PProductPromotionEntity entity);
+
+    public List<PPromoteProductEntity> selectPromotionPriceList(Integer promotionId, Integer skuId);
+
+    public Integer deletePromotionPriceList(Integer promotionId, Integer skuId);
+
+    public Integer insertPromotionPriceList(Integer promotionId, Integer skuId, List<PPromoteProductEntity> entity);
 
 
 }

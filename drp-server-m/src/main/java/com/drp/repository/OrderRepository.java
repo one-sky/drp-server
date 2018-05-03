@@ -23,4 +23,8 @@ public interface OrderRepository {
     public List<OrderVO> getOrderList(OrderSearchVO vo);
 
     public List<OrderItemVO> getOrderDetail(OrderSearchVO vo);
+
+    public OOrderEntity selectOrderByKey(Integer id);
+
+    public Integer updateOrder(OOrderEntity entity);
 }
